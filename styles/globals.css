@@ -7,6 +7,11 @@
     src:  url('/FK.woff2') format('woff2');
 }
 
-body {
-    font-family: FK;
+@font-face {
+    font-family: 'FKS';
+    src:  url('/FKS.woff2') format('woff2');
 }
+
+/*body {
+    font-family: FK;
+}*/

@@ -3,45 +3,28 @@ import { motion } from 'framer-motion'
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="">
       <Head>
         <title>lew.digital</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <div className="h-screen flex">
-          <div className="m-auto">
-            <UserCard />
-          </div>
+        <span className="absolute m-32 text-lg font-[FKS]">
+          Do you remember the first time?
+          <div className="h-10"></div>
+          <span className="inline-block w-40"></span> I remember <span className="inline-block w-40"></span>
+          <span className="text-3xl">the first time</span>
+        </span>
+        <div className="absolute m-56 mt-72 font-[FK]">
+          <span className="text-[15vw]">
+            lew
+          </span>
+          <span className="m-32 pt-10 text-[7vw]">
+            .digital
+          </span>
         </div>
       </main>
     </div>
   )
 }
-function UserCard() {
-  return <div>
-    <motion.span>
-      <span className="text-[15vw]">
-        lew
-      </span>
-    </motion.span >
-    <motion.span
-      style={{
-      }}
-      animate={{
-        opacity: 0,
-
-        marginRight: "-20vw"
-      }}
-      transition={{
-        repeat: Infinity, repeatType: "reverse", duration: 1, repeatDelay: 2, ease: "easeInOut"
-      }}
-    >
-      <span className="text-[7vw]">
-        .digital
-      </span>
-    </motion.span >
-  </div>
-}
-

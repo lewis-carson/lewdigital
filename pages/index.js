@@ -21,7 +21,7 @@ export default function Home() {
           <span className="text-[15vw]">
             lew
           </span>
-          <span className="m-32 pt-10 text-[7vw]">
+          <span className="m-32 pt-10 absolute text-[7vw]">
             .digital
           </span>
         </div>

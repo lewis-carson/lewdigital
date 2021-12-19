@@ -16,7 +16,8 @@ export default function Home() {
           <span className="inline-block w-40"></span> I remember <span className="inline-block w-40"></span>
           <span className="text-3xl">the first time</span>
         </span>
-        <div className="absolute m-56 mt-72 font-[FK]">
+
+        <div className="absolute m-56 mt-72 font-[FK] font-black tracking-[-0.1rem]">
           <span className="text-[15vw]">
             lew
           </span>

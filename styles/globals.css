@@ -2,10 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'Inter';
-    src:  url('/Inter-Medium.woff2') format('woff2');
-}
+@import url('https://rsms.me/inter/inter.css');
 
 @font-face {
     font-family: 'FK';
@@ -16,7 +13,3 @@
     font-family: 'FKS';
     src:  url('/FKS.woff2') format('woff2');
 }
-
-/*body {
-    font-family: FK;
-}*/

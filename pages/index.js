@@ -1,8 +1,9 @@
-import Head from 'next/head'
+
 
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
+import animate from "../utils/animate";
 
 const delay = 2
 
@@ -94,7 +95,7 @@ function Details() {
     }}
     key="details"
   >
-    <div className='text-lg'>
+    <div>
       <i>2022 bruh <br /> i promise you</i> <br />
       <br />
       <ul>
@@ -105,11 +106,9 @@ function Details() {
         <li>
           <A href="https://github.com/lew-d">github</A>
         </li>
-        {/*
         <li>
-          <A href="">blog</A>
+          <A href="/blog">blog</A>
         </li>
-        */}
       </ul>
     </div>
   </motion.div>
@@ -123,13 +122,10 @@ export default function Home() {
   }
 
   return (
-    <div className="">
-      <Head>
-        <title>lew.digital</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className='font-body'>
+    <motion.div
+      {...animate}
+    >
+      <main>
         <AnimatePresence>
           {
             !isOpen ?
@@ -138,6 +134,6 @@ export default function Home() {
           }
         </AnimatePresence>
       </main>
-    </div>
+    </motion.div>
   )
 }

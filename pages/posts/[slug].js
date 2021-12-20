@@ -35,7 +35,7 @@ function A({ href, children }) {
 export default function PostPage({ source, frontMatter }) {
     return (
         <Layout>
-            <div className="w-[40vw] my-32">
+            <div className="w-[70vw] lg:w-[40vw] my-16 lg:my-32 text-justify">
                 <A href="/blog">{"<---"}</A>
                 <div className='my-10'>
                     <h1 className='font-display text-4xl'>{frontMatter.title}</h1>

@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
 
-const delay = 5
+const delay = 2
 
 function Nametag({ onEnd }) {
   return <motion.div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>

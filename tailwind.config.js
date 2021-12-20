@@ -4,6 +4,10 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    fontFamily: {
+      "body": "Inter",
+      "display": "FK"
+    },
     extend: {},
   },
   plugins: [],

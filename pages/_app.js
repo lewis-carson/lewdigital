@@ -1,3 +1,5 @@
+import "inter-ui/inter.css";
+
 import '../styles/globals.css'
 import { AnimatePresence } from 'framer-motion'
 import Head from 'next/head'

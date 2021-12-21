@@ -32,13 +32,13 @@ export default function Post({ source, frontMatter, timeToRead }) {
     return <div className='w-[70vw] lg:w-[40vw]'>
         <div className='my-10'>
             <span className='font-display text-5xl'>{frontMatter.title}</span>
-            <br />
+            <div className="h-5"></div>
 
             <span><A href="/blog">{"<---"}</A></span>
             <span className='text-gray-400 float-right'> {timeToRead}</span>
             {
                 frontMatter.description && (
-                    <p className="description">{frontMatter.description}</p>
+                    <p>{frontMatter.description}</p>
                 )
             }
         </div >

@@ -6,6 +6,8 @@ import Layout from '../../components/Layout'
 import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
 import readingTime from 'reading-time'
 import Post from '../../components/Post'
+import prism from "remark-prism";
+import remarkCapitalize from 'remark-capitalize'
 
 import numWords from 'num-words'
 
@@ -24,9 +26,12 @@ export const getStaticProps = async ({ params }) => {
     const { content, data } = matter(source)
 
     const mdxSource = await serialize(content, {
-        // Optionally pass remark/rehype plugins
+        gfm: true,
         mdxOptions: {
-            remarkPlugins: [],
+            remarkPlugins: [
+                prism,
+                remarkCapitalize
+            ],
             rehypePlugins: [],
         },
         scope: data,
@@ -38,7 +43,7 @@ export const getStaticProps = async ({ params }) => {
         props: {
             source: mdxSource,
             frontMatter: data,
-            timeToRead: numWords(length) + ` ${length == 1 ? "min" : "mins"} approx. reading time`
+            timeToRead: numWords(length) + ` ${length == 1 ? "min" : "mins"} reading time`
         },
     }
 }

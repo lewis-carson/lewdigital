@@ -1,25 +1,32 @@
 import { MDXRemote } from 'next-mdx-remote'
 
-import CustomLink from './CustomLink'
 import Head from 'next/head'
 import Link from 'next/link'
 //import dynamic from 'next/dynamic'
 
 function A({ href, children }) {
     return <Link href={href}>
-        <span className="text-blue-500 hover:text-blue-300 font-black transition-all cursor-pointer">
+        <span className="text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
             {children}
         </span>
     </Link>
 }
 
+function Header({ children }) {
+    return <div className="font-display text-3xl py-5">{children}</div>
+}
 
 const components = {
-    a: CustomLink,
+    a: A,
     strong: ({ children }) =>
-        <span className='text-2xl font-display font-bold'>{children}</span>,
+        <span className='text-xl font-display font-bold'>{children}</span>,
     pre: ({ children }) =>
         <pre className='border p-5 rounded my-5'>{children}</pre>,
+    ol: ({ children }) =>
+        <ol className='list-decimal'>{children}</ol>,
+    li: ({ children }) =>
+        <li className='my-2'>{children}</li>,
+    h1: ({ children }) => <Header>{children}</Header>,
     // It also works with dynamically-imported components, which is especially
     // useful for conditionally loading components for certain routes.
     // See the notes in README.md for more details.
@@ -34,7 +41,7 @@ export default function Post({ source, frontMatter, timeToRead }) {
             <span className='font-display text-5xl'>{frontMatter.title}</span>
             <div className="h-5"></div>
 
-            <span><A href="/blog">{"<---"}</A></span>
+            <span className='font-black'><A href="/blog">{"<---"}</A></span>
             <span className='text-gray-400 float-right'> {timeToRead}</span>
             {
                 frontMatter.description && (

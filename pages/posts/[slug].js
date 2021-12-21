@@ -9,11 +9,8 @@ import path from 'path'
 import CustomLink from '../../components/CustomLink'
 import Layout from '../../components/Layout'
 import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
+import readingTime from 'reading-time'
 
-// Custom components/renderers to pass to MDX.
-// Since the MDX files aren't loaded by webpack, they have no knowledge of how
-// to handle import statements. Instead, you must include components in scope
-// here.
 const components = {
     a: CustomLink,
     // It also works with dynamically-imported components, which is especially
@@ -32,18 +29,19 @@ function A({ href, children }) {
 }
 
 
-export default function PostPage({ source, frontMatter }) {
+export default function PostPage({ source, frontMatter, timeToRead }) {
     return (
         <Layout>
-            <div className="w-[70vw] lg:w-[40vw] my-16 lg:my-32 text-justify">
+            <div>
                 <A href="/blog">{"<---"}</A>
                 <div className='my-10'>
-                    <h1 className='font-display text-4xl'>{frontMatter.title}</h1>
+                    <h1 className='font-bold tracking-[-0.15rem] text-4xl'>{frontMatter.title}</h1>
+                    <span>{timeToRead}</span>
                     {frontMatter.description && (
                         <p className="description">{frontMatter.description}</p>
                     )}
                 </div>
-                <main>
+                <main className=' text-justify'>
                     <MDXRemote {...source} components={components} />
                 </main>
             </div>
@@ -70,6 +68,7 @@ export const getStaticProps = async ({ params }) => {
         props: {
             source: mdxSource,
             frontMatter: data,
+            timeToRead: readingTime(content).text
         },
     }
 }

@@ -10,7 +10,7 @@ const delay = 2
 function Nametag({ onEnd }) {
   return <motion.div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
     <motion.div
-      className='text-7xl lg:text-8xl font-display'
+      className='text-7xl lg:text-8xl font-display font-bold'
       initial={{
         opacity: 1,
       }}

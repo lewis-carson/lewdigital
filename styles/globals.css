@@ -11,3 +11,14 @@
     font-family: 'FKS';
     src:  url('/FKS.woff2') format('woff2');
 }
+
+
+@font-face {
+    font-family: 'bezier';
+    src:  url('/bezier.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'parabole';
+    src:  url('/parabole.woff2') format('woff2');
+}

@@ -8,7 +8,7 @@ import { postFilePaths, POSTS_PATH } from '../utils/mdxUtils'
 export default function Index({ posts }) {
     return (
         <Layout>
-            <div className="font-display text-5xl mb-5">Blog</div>
+            <div className="font-display text-5xl mb-5 font-bold">Blog</div>
             <div className="space-y-2">
                 {posts.map((post) => (
                     <div key={post.filePath}>
@@ -23,7 +23,7 @@ export default function Index({ posts }) {
                     </div>
                 ))}
             </div>
-        </Layout>
+        </Layout >
     )
 }
 

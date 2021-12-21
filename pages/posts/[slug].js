@@ -13,6 +13,10 @@ import readingTime from 'reading-time'
 
 const components = {
     a: CustomLink,
+    strong: ({ children }) =>
+        <span className='text-2xl font-display font-bold'>{children}</span>,
+    pre: ({ children }) =>
+        <pre className='border p-5 rounded my-5'>{children}</pre>,
     // It also works with dynamically-imported components, which is especially
     // useful for conditionally loading components for certain routes.
     // See the notes in README.md for more details.
@@ -32,10 +36,10 @@ function A({ href, children }) {
 export default function PostPage({ source, frontMatter, timeToRead }) {
     return (
         <Layout>
-            <div>
+            <div className='w-[70vw] lg:w-[40vw]'>
                 <A href="/blog">{"<---"}</A>
                 <div className='my-10'>
-                    <h1 className='font-bold tracking-[-0.15rem] text-4xl'>{frontMatter.title}</h1>
+                    <h1 className='font-display text-5xl'>{frontMatter.title}</h1>
                     <span>{timeToRead}</span>
                     {frontMatter.description && (
                         <p className="description">{frontMatter.description}</p>

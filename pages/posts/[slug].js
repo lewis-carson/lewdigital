@@ -38,7 +38,7 @@ export const getStaticProps = async ({ params }) => {
         props: {
             source: mdxSource,
             frontMatter: data,
-            timeToRead: numWords(length) + " min approx. reading time"
+            timeToRead: numWords(length) + ` ${length == 1 ? "min" : "mins"} approx. reading time`
         },
     }
 }

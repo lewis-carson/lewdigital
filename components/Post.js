@@ -13,7 +13,7 @@ function A({ href, children }) {
 }
 
 function Header({ children }) {
-    return <div className="font-display text-3xl">{children}</div>
+    return <div className="font-display text-3xl pb-5">{children}</div>
 }
 
 const components = {
@@ -67,20 +67,9 @@ function FadeIn({ children }) {
         >
             {children}
         </motion.div>
-        <motion.div
-            className='lg:hidden'
-            initial={{
-                opacity: 0
-            }}
-            whileInView={{
-                opacity: 1
-            }}
-            transition={{
-                duration: 0.3
-            }}
-        >
+        <div className='lg:hidden'>
             {children}
-        </motion.div>
+        </div>
     </div>
 }
 

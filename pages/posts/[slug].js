@@ -12,11 +12,7 @@ import remarkCapitalize from 'remark-capitalize'
 import numWords from 'num-words'
 
 export default function PostPage(props) {
-    return (
-        <Layout>
-            <Post {...props} />
-        </Layout>
-    )
+    return <Post {...props} />
 }
 
 export const getStaticProps = async ({ params }) => {
@@ -46,9 +42,22 @@ export const getStaticProps = async ({ params }) => {
 
     splitContent = await Promise.all(splitContent);
 
+    var groupedContent = []
+
+    // chunk content
+    var i, j, temporary, chunk = 2;
+    for (i = 0, j = splitContent.length; i < j; i += chunk) {
+        temporary = splitContent.slice(i, i + chunk);
+
+        groupedContent.push({
+            annotation: temporary[1],
+            figure: temporary[0]
+        })
+    }
+
     return {
         props: {
-            s: splitContent,
+            s: groupedContent,
             frontMatter: data,
             timeToRead: numWords(length) + ` ${length == 1 ? "min" : "mins"} reading time`
         },

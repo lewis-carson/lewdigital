@@ -25,25 +25,30 @@ export const getStaticProps = async ({ params }) => {
 
     const { content, data } = matter(source)
 
-    console.log(content)
+    var splitContent = content.split("===")
 
-    const mdxSource = await serialize(content, {
-        gfm: true,
-        mdxOptions: {
-            remarkPlugins: [
-                prism,
-                remarkCapitalize
-            ],
-            rehypePlugins: [],
-        },
-        scope: data,
-    })
+    // for block in splitcontent
+    splitContent = splitContent.map(async block => {
+        return await serialize(block, {
+            gfm: true,
+            mdxOptions: {
+                remarkPlugins: [
+                    prism,
+                    remarkCapitalize
+                ],
+                rehypePlugins: [],
+            },
+            scope: data,
+        })
+    });
 
     var length = Math.ceil(readingTime(content).minutes)
 
+    splitContent = await Promise.all(splitContent);
+
     return {
         props: {
-            source: mdxSource,
+            s: splitContent,
             frontMatter: data,
             timeToRead: numWords(length) + ` ${length == 1 ? "min" : "mins"} reading time`
         },

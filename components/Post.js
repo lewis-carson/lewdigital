@@ -35,8 +35,12 @@ const components = {
     Head,
 }
 
+var hash = function (s) {
+    s = s.toString()
+    return s.split("").reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
+}
 
-export default function Post({ source, frontMatter, timeToRead }) {
+export default function Post({ s, frontMatter, timeToRead }) {
     return <div className='w-[80vw] lg:w-[50vw]'>
         <div className='my-6'>
             <span className=''>
@@ -59,14 +63,12 @@ export default function Post({ source, frontMatter, timeToRead }) {
             </span>
 
             {
-                frontMatter.description && (
-                    <p>{frontMatter.description}</p>
-                )
+                frontMatter.description && <p>{frontMatter.description}</p>
             }
 
         </div>
         <main className=' text-justify'>
-            <MDXRemote {...source} components={components} />
+            {s.map(source => <MDXRemote {...source} components={components} />)}
         </main>
     </div >
 }

@@ -96,8 +96,8 @@ function Details() {
     key="details"
   >
     <div>
-      <i>2022 bruh <br /> i promise you</i> <br />
-      <br />
+      Lewis Carson
+      <div className="h-4"></div>
       <ul>
         <li>
           <A href="mailto:torvimmm@gmail.com">mail</A>
@@ -111,7 +111,7 @@ function Details() {
         </li>
       </ul>
     </div>
-  </motion.div>
+  </motion.div >
 }
 
 export default function Home() {

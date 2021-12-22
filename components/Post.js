@@ -13,7 +13,7 @@ function A({ href, children }) {
 }
 
 function Header({ children }) {
-    return <div className="font-display text-3xl py-5">{children}</div>
+    return <div className="font-display text-3xl">{children}</div>
 }
 
 const components = {
@@ -21,34 +21,50 @@ const components = {
     strong: ({ children }) =>
         <span className='text-xl font-display font-bold'>{children}</span>,
     pre: ({ children }) =>
-        <pre className='border p-5 rounded my-5'>{children}</pre>,
+        <pre className='border p-5 rounded my-5 w-auto overflow-scroll'>
+            {children}
+        </pre>,
     ol: ({ children }) =>
         <ol className='list-decimal'>{children}</ol>,
     li: ({ children }) =>
-        <li className='my-2'>{children}</li>,
+        <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
-    // It also works with dynamically-imported components, which is especially
-    // useful for conditionally loading components for certain routes.
-    // See the notes in README.md for more details.
-    //TestComponent: dynamic(() => import('../../components/TestComponent')),
+    p: ({ children }) => <div className='my-5'>{children}</div>,
+    ul: ({ children }) =>
+        <ul className='list-[square]'>{children}</ul>,
     Head,
 }
 
 
 export default function Post({ source, frontMatter, timeToRead }) {
-    return <div className='w-[70vw] lg:w-[40vw]'>
-        <div className='my-10'>
-            <span className='font-display text-5xl'>{frontMatter.title}</span>
-            <div className="h-5"></div>
+    return <div className='w-[80vw] lg:w-[50vw]'>
+        <div className='my-6'>
+            <span className=''>
+                <div className='font-display text-5xl'>
+                    {frontMatter.title}
+                </div>
 
-            <span className='font-black'><A href="/blog">{"<---"}</A></span>
-            <span className='text-gray-400 float-right'> {timeToRead}</span>
+
+                <div className="h-5"></div>
+
+
+                <A href="/blog">
+                    <span className="text-gray-400 font-semibold hover:text-gray-200 transition-all">
+                        {"<---"}
+                    </span>
+                </A>
+
+                <span className='text-gray-400 float-right'> {timeToRead}</span>
+
+            </span>
+
             {
                 frontMatter.description && (
                     <p>{frontMatter.description}</p>
                 )
             }
-        </div >
+
+        </div>
         <main className=' text-justify'>
             <MDXRemote {...source} components={components} />
         </main>

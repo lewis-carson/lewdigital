@@ -25,6 +25,8 @@ export const getStaticProps = async ({ params }) => {
 
     const { content, data } = matter(source)
 
+    console.log(content)
+
     const mdxSource = await serialize(content, {
         gfm: true,
         mdxOptions: {

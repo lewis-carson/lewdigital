@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion'
 import Head from 'next/head'
 
 function MyApp({ Component, pageProps, router }) {
-  const url = `https://wallis.dev${router.route}`
+  const url = `https://lew.digital${router.route}`
 
   return <div className='font-body text-lg'>
 

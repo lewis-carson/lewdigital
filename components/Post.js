@@ -122,7 +122,7 @@ export default function Post({ s, frontMatter, timeToRead }) {
         return <FigurePair figure={annotation} annotation={figure} />
     })
 
-    return <div className='overflow-hidden'>
+    return <div>
 
         <div className='border-b lg:border-0'>
             <div className="w-screen lg:min-h-screen lg:flex">

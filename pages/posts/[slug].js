@@ -6,10 +6,10 @@ import Layout from '../../components/Layout'
 import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
 import readingTime from 'reading-time'
 import Post from '../../components/Post'
-import prism from "remark-prism";
 import remarkCapitalize from 'remark-capitalize'
 
 import numWords from 'num-words'
+import rehypeHighlight from 'rehype-highlight'
 
 export default function PostPage(props) {
     return <Post {...props} />
@@ -29,10 +29,11 @@ export const getStaticProps = async ({ params }) => {
             gfm: true,
             mdxOptions: {
                 remarkPlugins: [
-                    prism,
                     remarkCapitalize
                 ],
-                rehypePlugins: [],
+                rehypePlugins: [
+                    rehypeHighlight
+                ],
             },
             scope: data,
         })

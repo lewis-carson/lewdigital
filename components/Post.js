@@ -21,15 +21,13 @@ const components = {
     strong: ({ children }) =>
         <span className='text-xl font-display font-bold'>{children}</span>,
     pre: ({ children }) =>
-        <pre className='border p-5 rounded my-5 w-auto overflow-scroll'>
-            {children}
-        </pre>,
+        <pre className='max-w-[90vw] lg:max-w-[40vw]'>{children}</pre>,
     ol: ({ children }) =>
         <ol className='list-decimal'>{children}</ol>,
     li: ({ children }) =>
         <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
-    p: ({ children }) => <div className='my-5'>{children}</div>,
+    p: ({ children }) => <div className='mb-5'>{children}</div>,
     ul: ({ children }) =>
         <ul className='list-[square]'>{children}</ul>,
     Head,
@@ -41,42 +39,59 @@ import { motion } from 'framer-motion';
 
 const Column = ({ children, isFigure }) =>
     <div
-        className="w-1/2 flex pb-5"
+        className="lg:w-[50vw] lg:min-h-screen flex lg:pb-5"
         style={{
             backgroundColor: (isFigure ? "#F5F5F5" : "")
         }}>
-        <div className='m-16'>
+        <div className='lg:p-16 p-[5vw]'>
             {children}
         </div>
     </div >
 
 function FadeIn({ children }) {
-    return <motion.div
-        initial={{
-            opacity: 0
-        }}
-        whileInView={{
-            opacity: 1
-        }}
-        transition={{
-            duration: 0.3
-        }}
-        viewport={{
-            margin: "-100px 0px -300px 0px"
-        }}
-    >
-        {children}
-    </motion.div>
+    return <div>
+        <motion.div
+            className='hidden lg:block'
+            initial={{
+                opacity: 0
+            }}
+            whileInView={{
+                opacity: 1
+            }}
+            transition={{
+                duration: 0.3
+            }}
+            viewport={{
+                margin: "-100px 0px -300px 0px"
+            }}
+        >
+            {children}
+        </motion.div>
+        <motion.div
+            className='lg:hidden'
+            initial={{
+                opacity: 0
+            }}
+            whileInView={{
+                opacity: 1
+            }}
+            transition={{
+                duration: 0.3
+            }}
+        >
+            {children}
+        </motion.div>
+    </div>
 }
 
 function Sticky({ children }) {
-    return <div className='sticky top-16'>
+    return <div className='lg:sticky top-16'>
         <FadeIn>{children}</FadeIn>
     </div >
 }
 
 function FigurePair({ figure, annotation }) {
-    return <div className="w-screen min-h-screen flex">
+    return <div className="w-screen lg:min-h-screen lg:flex">
         <Column>
             <Sticky>{annotation}</Sticky>
         </Column>
@@ -89,14 +104,12 @@ function FigurePair({ figure, annotation }) {
 
 function Title({ frontMatter, timeToRead }) {
     return <div>
-        <span className=''>
+        <span>
             <div className='font-display text-5xl'>
                 {frontMatter.title}
             </div>
 
-
             <div className="h-5"></div>
-
 
             <A href="/blog">
                 <span className="text-gray-400 font-semibold hover:text-gray-200 transition-all">
@@ -105,12 +118,9 @@ function Title({ frontMatter, timeToRead }) {
             </A>
 
             <span className='text-gray-400 float-right'> {timeToRead}</span>
-
         </span>
 
-        {
-            frontMatter.description && <p>{frontMatter.description}</p>
-        }
+        {frontMatter.description && <p>{frontMatter.description}</p>}
 
     </div>
 }
@@ -123,10 +133,21 @@ export default function Post({ s, frontMatter, timeToRead }) {
         return <FigurePair figure={annotation} annotation={figure} />
     })
 
-    return <div>
-        <FigurePair figure={<></>} annotation={
-            <Title frontMatter={frontMatter} timeToRead={timeToRead} />
-        } />
+    return <div className='overflow-hidden'>
+
+        <div className='border-b lg:border-0'>
+            <div className="w-screen lg:min-h-screen lg:flex">
+                <Column>
+                    <Title frontMatter={frontMatter} timeToRead={timeToRead} />
+                </Column>
+                <div
+                    className="lg:w-1/2 lg:min-h-screen flex lg:pb-5"
+                    style={{
+                        backgroundColor: "#F5F5F5"
+                    }}>
+                </div >
+            </div>
+        </div>
 
         <main className='text-justify'>
             {pairs}

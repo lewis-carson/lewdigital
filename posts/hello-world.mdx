@@ -2,18 +2,55 @@
 title: Monte Carlo Portfolio Optimisation
 ---
 
-annotation 1
+Flakes are very handy to setup entirely pure,
+project-specific dependencies (not just dependencies, but
+build steps, shell environments and more) in a declarative
+way. Writing Flake expressions can get repetitive though,
+oftentimes, you'd much rather start off with a skeleton.
+Luckily, `nix` already supports templates!
+
+You might already be familiar with `nix flake init`, that
+drops a "default" flake expression into your current working
+directory. If you head over to the manpage:
+
 
 ===
 
-figure 1
+```bash
+nix flake init --help
+```
 
 ===
 
-annotation 2
+You will read that `nix flake init` creates a flake using
+the "default template". Additionally, you can create a flake
+from a specific template by passing the `-t` flag. Where
+does this default originate from?
+
+# Flake Registries
+
+Quick detour into registries! Registries are a way to alias
+popular flakes using identifiers:
 
 ===
 
-figure 2
+```
+# inside ~/mytemplates/flake.nix
 
-My favorite search engine is [Duck Duck Go](https://duckduckgo.com).
+{
+  description = "Pepper's flake templates";
+
+  outputs = { self, ... }: {
+    templates = {
+      latex-report = {
+        path = ./latex-report-template;
+        description = "A latex whitepaper project";
+      };
+      rust-hello = {
+        path = ./rust-hello-template;
+        description = "Simple Hello World in Rust";
+      };
+    };
+  };
+}
+```

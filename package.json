@@ -17,8 +17,7 @@
     "reading-time": "^1.5.0",
     "rehype-highlight": "^5.0.1",
     "remark-capitalize": "^1.1.0",
-    "sass": "^1.45.1",
-    "tls": "^0.0.1"
+    "sass": "^1.45.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",

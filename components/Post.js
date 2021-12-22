@@ -2,7 +2,7 @@ import { MDXRemote } from 'next-mdx-remote'
 
 import Head from 'next/head'
 import Link from 'next/link'
-//import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic'
 
 function A({ href, children }) {
     return <Link href={href}>
@@ -13,7 +13,7 @@ function A({ href, children }) {
 }
 
 function Header({ children }) {
-    return <div className="font-display text-3xl pb-5">{children}</div>
+    return <div className="font-display font-black text-5xl pb-5">{children}</div>
 }
 
 const components = {
@@ -39,7 +39,7 @@ import { motion } from 'framer-motion';
 
 const Column = ({ children, isFigure }) =>
     <div
-        className="lg:w-[50vw] lg:min-h-screen flex lg:pb-5"
+        className="lg:w-[50vw] flex lg:pb-5"
         style={{
             backgroundColor: (isFigure ? "#F5F5F5" : "")
         }}>
@@ -62,7 +62,7 @@ function FadeIn({ children }) {
                 duration: 0.3
             }}
             viewport={{
-                margin: "-100px 0px -300px 0px"
+                margin: "-10% 0px -30% 0px"
             }}
         >
             {children}
@@ -80,7 +80,7 @@ function Sticky({ children }) {
 }
 
 function FigurePair({ figure, annotation }) {
-    return <div className="w-screen lg:min-h-screen lg:flex">
+    return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <Column>
             <Sticky>{annotation}</Sticky>
         </Column>
@@ -94,11 +94,11 @@ function FigurePair({ figure, annotation }) {
 function Title({ frontMatter, timeToRead }) {
     return <div>
         <span>
-            <div className='font-display text-5xl'>
+            <div className='font-display font-black text-5xl lg:text-7xl'>
                 {frontMatter.title}
             </div>
 
-            <div className="h-5"></div>
+            <div className="h-5 lg:h-10"></div>
 
             <A href="/blog">
                 <span className="text-gray-400 font-semibold hover:text-gray-200 transition-all">
@@ -125,12 +125,12 @@ export default function Post({ s, frontMatter, timeToRead }) {
     return <div>
 
         <div className='border-b lg:border-0'>
-            <div className="w-screen lg:min-h-screen lg:flex">
+            <div className="w-screen lg:min-h-[40vh] lg:flex">
                 <Column>
                     <Title frontMatter={frontMatter} timeToRead={timeToRead} />
                 </Column>
                 <div
-                    className="lg:w-1/2 lg:min-h-screen flex lg:pb-5"
+                    className="lg:w-1/2 flex lg:pb-5"
                     style={{
                         backgroundColor: "#F5F5F5"
                     }}>

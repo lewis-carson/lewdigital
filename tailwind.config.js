@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     fontFamily: {
       "body": ["Inter", "Inter var"],
-      "display": "bezier"
+      "display": "parabole"
     },
     extend: {},
   },

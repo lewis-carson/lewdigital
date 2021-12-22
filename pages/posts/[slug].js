@@ -7,7 +7,6 @@ import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
 import readingTime from 'reading-time'
 import Post from '../../components/Post'
 import remarkCapitalize from 'remark-capitalize'
-
 import numWords from 'num-words'
 import rehypeHighlight from 'rehype-highlight'
 

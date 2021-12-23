@@ -13,7 +13,7 @@ function A({ href, children }) {
 }
 
 function Header({ children }) {
-    return <div className="leading-[3.5rem] text-left font-display font-black text-[3.5rem] pb-10">
+    return <div className="leading-[3.5rem] text-left font-display font-black text-[3.5rem] ">
         <Pad>{children}</Pad>
     </div>
 }
@@ -31,9 +31,9 @@ const components = {
     li: ({ children }) =>
         <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
-    p: ({ children }) => <Pad><div className='pb-10'>{children}</div></Pad>,
+    p: ({ children }) => <Pad><div>{children}</div></Pad>,
     ul: ({ children }) =>
-        <ul className='list-[square] pb-10'><Pad>{children}</Pad></ul>,
+        <ul className='list-[square]'><Pad>{children}</Pad></ul>,
     Head
 }
 
@@ -55,7 +55,7 @@ const Column = ({ children, isFigure }) =>
 function FadeIn({ children, margin }) {
     return <div>
         <motion.div
-            className='hidden lg:block'
+            className='hidden lg:block space-y-5'
             initial={{
                 opacity: 0
             }}

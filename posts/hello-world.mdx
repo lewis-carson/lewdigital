@@ -46,7 +46,12 @@ h(x)(y)(z) = g(y)(z) = k(z) = v
 
 Mathematically, if `f` is a function that takes two
 arguments `x` and `y`, such that `x ϵ X`, and `y ϵ Y` , we
-write it as:
+write it as:  
+
+
+
+Where `×` denotes the Cartesian product of set `X` and `Y`,
+and curried `f` (denoted by `h` here) is written as:  
 
 ===
 
@@ -54,12 +59,7 @@ write it as:
 f: (X × Y) -> Z
 ```
 
-===
 
-where `×` denotes the Cartesian product of set `X` and `Y`,
-and curried `f` (denoted by `h` here) is written as:
-
-===
 
 ```
 h: X -> (Y -> Z)

@@ -5,11 +5,24 @@ import path from 'path'
 import Layout from '../components/Layout'
 import { postFilePaths, POSTS_PATH } from '../utils/mdxUtils'
 
+function A({ href, children }) {
+    return <Link href={href}>
+        <span className="text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
+            {children}
+        </span>
+    </Link>
+}
+
 export default function Index({ posts }) {
     return (
         <Layout>
             <div className='max-w-[70vw] lg:max-w-[25vw]'>
-                <div className="font-display text-5xl mb-5 font-bold">Blog</div>
+                <A href="/">
+                    <span className="text-gray-400 text-2xl font-semibold hover:text-gray-200 transition-all">
+                        {"<---"}
+                    </span>
+                </A>
+                <div className="font-display text-5xl mb-5 mt-3 font-bold">Blog</div>
                 <div className="space-y-2">
                     {posts.map((post) => (
                         <div key={post.filePath}>

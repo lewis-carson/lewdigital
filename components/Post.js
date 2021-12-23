@@ -13,24 +13,28 @@ function A({ href, children }) {
 }
 
 function Header({ children }) {
-    return <div className="font-display font-black text-5xl pb-5">{children}</div>
+    return <div className="leading-[3.5rem] text-left font-display font-black text-[3.5rem] pb-10">
+        <Pad>{children}</Pad>
+    </div>
 }
+
+const Pad = ({ children }) => <div className='lg:mx-16 px-[5vw]'>{children}</div>
 
 const components = {
     a: A,
     strong: ({ children }) =>
-        <span className='text-xl font-display font-bold'>{children}</span>,
+        <span className='text-2xl font-display'>{children}</span>,
     pre: ({ children }) =>
-        <pre className='max-w-[90vw] lg:max-w-[40vw]'>{children}</pre>,
+        <pre className='w-[100vw] lg:w-[50vw] px-10'>{children}</pre>,
     ol: ({ children }) =>
-        <ol className='list-decimal'>{children}</ol>,
+        <ol className='list-decimal'><Pad>{children}</Pad></ol>,
     li: ({ children }) =>
         <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
-    p: ({ children }) => <div className='mb-5'>{children}</div>,
+    p: ({ children }) => <Pad><div className='pb-10'>{children}</div></Pad>,
     ul: ({ children }) =>
-        <ul className='list-[square]'>{children}</ul>,
-    Head,
+        <ul className='list-[square] pb-10'><Pad>{children}</Pad></ul>,
+    Head
 }
 
 //  < MDXRemote { ...source } components = { components } />
@@ -41,9 +45,9 @@ const Column = ({ children, isFigure }) =>
     <div
         className="lg:w-[50vw] flex lg:pb-5"
         style={{
-            backgroundColor: (isFigure ? "#F5F5F5" : "")
+            backgroundColor: (isFigure ? "#f7f7f7" : "")
         }}>
-        <div className='lg:p-16 p-[5vw]'>
+        <div className='py-10'>
             {children}
         </div>
     </div >
@@ -62,7 +66,7 @@ function FadeIn({ children }) {
                 duration: 0.3
             }}
             viewport={{
-                margin: "-10% 0px -30% 0px"
+                margin: "-10% 0px -25% 0px"
             }}
         >
             {children}
@@ -82,35 +86,30 @@ function Sticky({ children }) {
 function FigurePair({ figure, annotation }) {
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <Column>
-            <Sticky>{annotation}</Sticky>
+            {annotation}
         </Column>
+
         <Column isFigure>
             <Sticky>{figure}</Sticky>
         </Column>
-
     </div>
 }
 
 function Title({ frontMatter, timeToRead }) {
-    return <div>
-        <span>
-            <div className='font-display font-black text-5xl lg:text-7xl'>
-                {frontMatter.title}
-            </div>
+    return <div className='lg:mx-16 lg:my-0 p-[5vw]'>
+        <div className='font-display font-black text-5xl xl:text-7xl'>
+            {frontMatter.title}
+        </div>
 
-            <div className="h-5 lg:h-10"></div>
+        <div className="h-5 lg:h-10"></div>
 
-            <A href="/blog">
-                <span className="text-gray-400 font-semibold hover:text-gray-200 transition-all">
-                    {"<---"}
-                </span>
-            </A>
+        <A href="/blog">
+            <span className="text-gray-400 font-semibold hover:text-gray-200 transition-all">
+                {"<---"}
+            </span>
+        </A>
 
-            <span className='text-gray-400 float-right'> {timeToRead}</span>
-        </span>
-
-        {frontMatter.description && <p>{frontMatter.description}</p>}
-
+        <span className='text-gray-400 float-right'> {timeToRead}</span>
     </div>
 }
 
@@ -125,14 +124,14 @@ export default function Post({ s, frontMatter, timeToRead }) {
     return <div>
 
         <div className='border-b lg:border-0'>
-            <div className="w-screen lg:min-h-[40vh] lg:flex">
+            <div className="w-screen lg:flex">
                 <Column>
                     <Title frontMatter={frontMatter} timeToRead={timeToRead} />
                 </Column>
                 <div
                     className="lg:w-1/2 flex lg:pb-5"
                     style={{
-                        backgroundColor: "#F5F5F5"
+                        backgroundColor: "#f7f7f7"
                     }}>
                 </div >
             </div>

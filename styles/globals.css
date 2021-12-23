@@ -2,21 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'FK';
-    src:  url('/FK.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'FKS';
-    src:  url('/FKS.woff2') format('woff2');
-}
-
-
-@font-face {
-    font-family: 'bezier';
-    src:  url('/bezier.woff2') format('woff2');
-}
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
 @font-face {
     font-family: 'parabole';

@@ -18,23 +18,6 @@ a primer here :)
 
 ===
 
-# Contents
-
- 1. [Currying](#currying)  
- 2. [Procedural Macros](#procedural-macros)  
- 3. [Definitions](#definitions)  
- 4. [Refinement](#refinement)  
- 5. [The In-betweens](#the-in-betweens)  
- &nbsp;&nbsp;&nbsp;&nbsp; 5.1 [Dependencies](#dependencies)  
- &nbsp;&nbsp;&nbsp;&nbsp; 5.2 [The attribute macro](#the-attribute-macro)  
- &nbsp;&nbsp;&nbsp;&nbsp; 5.3 [Function Body](#function-body)  
- &nbsp;&nbsp;&nbsp;&nbsp; 5.4 [Function Signature](#function-signature)  
- &nbsp;&nbsp;&nbsp;&nbsp; 5.5 [Getting it together](#getting-it-together)  
- 6. [Debugging and Testing](#debugging-and-testing)  
- 7. [Notes](#notes)  
- 8. [Conclusion](#conclusion)  
-
-
 ===
 
 # Currying
@@ -174,21 +157,22 @@ We can drop the parentheses because `->` is right associative:
 
 ```
 impl Fn(u32) -> impl Fn(u32) -> u32
-
 ```
 
 ===
 
-**Accessing environment**  
- A function cannot access it's environment. Our solution
+# Accessing environment
+
+A function cannot access it's environment. Our solution
 will not work. `add_curried3` attempts to access `x`, which
-is not allowed! A closure[^closure] however, can. If we are
+is not allowed! A closurehowever, can. If we are
 returning a closure, our return type must be `impl Fn`, and
 not `fn`.  The difference between the `Fn` trait and
 function pointers is beyond the scope of this post.
 
-[^closure]: [https://doc.rust-lang.org/book/ch13-01-closures.html](https://doc.rust-lang.org/book/ch13-01-closures.html)
+===
 
+===
 
 # Refinement
 
@@ -228,10 +212,8 @@ Or at least, that was the most I could make out of the error
 message.
 
 We are going to have to cheat a bit to fix this issue; with
-type aliases and a convenient nightly feature [^features]:
+type aliases and a convenient nightly feature:
 
-[^features]: [caniuse.rs](https://caniuse.rs) contains an
-  indexed list of features and their status.
 
 ===
 
@@ -248,11 +230,6 @@ fn add(x: u32) -> T2 {
 ```
 
 ===
-
-Drop that into a cargo project, call `add(4)(5)(6)`, cross
-your fingers, and run `cargo +nightly run`. You should see a
-15 unless you forgot to print it!
-
 # The In-Betweens
 
 Let us write the magical bits that take us from function to
@@ -275,7 +252,6 @@ Your directory should look something like this:
 ```
 
 ===
-
 # Dependencies
 
 We will be using a total of 3 external crates:

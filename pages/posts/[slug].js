@@ -9,9 +9,28 @@ import Post from '../../components/Post'
 import remarkCapitalize from 'remark-capitalize'
 import numWords from 'num-words'
 import rehypeHighlight from 'rehype-highlight'
+import { motion } from 'framer-motion'
+import animate from '../../utils/animate'
 
 export default function PostPage(props) {
-    return <Post {...props} />
+    return <motion.div {...animate} key="post"> <Post {...props} /> </motion.div>
+}
+
+async function serial(block, data) {
+    var s = await serialize(block, {
+        gfm: true,
+        mdxOptions: {
+            remarkPlugins: [
+                remarkCapitalize
+            ],
+            rehypePlugins: [
+                rehypeHighlight
+            ],
+        },
+        scope: data,
+    })
+
+    return s
 }
 
 export const getStaticProps = async ({ params }) => {
@@ -24,18 +43,7 @@ export const getStaticProps = async ({ params }) => {
 
     // for block in splitcontent
     splitContent = splitContent.map(async block => {
-        return await serialize(block, {
-            gfm: true,
-            mdxOptions: {
-                remarkPlugins: [
-                    remarkCapitalize
-                ],
-                rehypePlugins: [
-                    rehypeHighlight
-                ],
-            },
-            scope: data,
-        })
+        return await serial(block, data)
     });
 
     var length = Math.ceil(readingTime(content).minutes)

@@ -52,7 +52,7 @@ const Column = ({ children, isFigure }) =>
         </div>
     </div >
 
-function FadeIn({ children }) {
+function FadeIn({ children, margin }) {
     return <div>
         <motion.div
             className='hidden lg:block'
@@ -66,7 +66,7 @@ function FadeIn({ children }) {
                 duration: 0.3
             }}
             viewport={{
-                margin: "-10% 0px -25% 0px"
+                margin: margin
             }}
         >
             {children}
@@ -79,18 +79,26 @@ function FadeIn({ children }) {
 
 function Sticky({ children }) {
     return <div className='lg:sticky top-16'>
-        <FadeIn>{children}</FadeIn>
+        {children}
     </div >
 }
 
-function FigurePair({ figure, annotation }) {
+function FigurePair({ figure, annotation, hasFadeMargin = true }) {
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <Column>
-            {annotation}
+            <Sticky>
+                <FadeIn margin={hasFadeMargin ? "-10% 0px -35% 0px" : ""}>
+                    {annotation}
+                </FadeIn>
+            </Sticky>
         </Column>
 
         <Column isFigure>
-            <Sticky>{figure}</Sticky>
+            <Sticky>
+                <FadeIn margin={hasFadeMargin ? "-10% 0px -35% 0px" : ""}>
+                    {figure}
+                </FadeIn>
+            </Sticky>
         </Column>
     </div>
 }
@@ -114,11 +122,11 @@ function Title({ frontMatter, timeToRead }) {
 }
 
 export default function Post({ s, frontMatter, timeToRead }) {
-    var pairs = s.map(source => {
+    var pairs = s.map((source, i) => {
         var figure = <MDXRemote {...source.figure} components={components} />
         var annotation = <MDXRemote {...source.annotation} components={components} />
 
-        return <FigurePair figure={annotation} annotation={figure} />
+        return <FigurePair figure={annotation} annotation={figure} hasFadeMargin={i != 0} />
     })
 
     return <div>
@@ -140,5 +148,21 @@ export default function Post({ s, frontMatter, timeToRead }) {
         <main className='text-justify'>
             {pairs}
         </main>
+
+        <FigurePair
+            figure={<></>}
+            annotation={
+                <div className='pt-32'>
+                    <Pad>
+                        <div className='font-display text-4xl pb-5'>Thanks for reading.</div>
+                        <div className='pt-4 text-xl'>
+                            <A href="/">{"<--- "} <span className='float-right'>Home</span></A>
+                            <div className="h-3"></div>
+                            <A href="/blog">{"<--- "} <span className='float-right'>Blog</span> </A>
+                        </div>
+                    </Pad>
+                </div>
+            }
+        />
     </div >
 }

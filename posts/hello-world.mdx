@@ -1,281 +1,92 @@
 ---
-title: Monte Carlo Portfolio Optimisation
+title: Tiny Chess Engine
 ---
-This post contains a gentle introduction to procedural
-macros in Rust and a guide to writing a procedural macro to
-curry Rust functions. The source code for the entire library
-can be found [here](https://github.com/nerdypepper/cutlass).
-It is also available on [crates.io](https://crates.io/crates/cutlass).
 
-The following links might prove to be useful before getting
-started:
+In this article I'm writing a simple chess engine that provides the basis for the easy prototyping of ideas.
 
- - [Procedural Macros](https://doc.rust-lang.org/reference/procedural-macros.html)
- - [Currying](https://en.wikipedia.org/wiki/Currying)
+I've made a few chess engines before in a variety of languages:
+- Python
+- Go
+- Rust
 
-Or you can pretend you read them, because I have included
-a primer here :)
+None of them were great. Their main issue was that they were poorly planned out and hence had a weak design philosophy driving decisions to add or remove certain features. I just wanted to create an engine that *worked*.
 
 ===
 
 ===
 
-# Currying
+First, let's create an empty rust package and populate its `Cargo.toml` file.
 
-Currying is the process of transformation of a function call
-like `f(a, b, c)` to `f(a)(b)(c)`. A curried function
-returns a concrete value only when it receives all its
-arguments! If it does recieve an insufficient amount of
-arguments, say 1 of 3, it returns a *curried function*, that
-returns after receiving 2 arguments.
+We'll be using `pleco` to handle the game logic so we can focus on acually creating an engine.
 
 ===
 
-```
-curry(f(a, b, c)) = h(a)(b)(c)
-
-h(x) = g   <- curried function that takes upto 2 args (g)
-g(y) = k   <- curried function that takes upto 1 arg (k)
-k(z) = v   <- a value (v)
-
-Keen readers will conclude the following,
-h(x)(y)(z) = g(y)(z) = k(z) = v
-```
-
-===
-
-Mathematically, if `f` is a function that takes two
-arguments `x` and `y`, such that `x ϵ X`, and `y ϵ Y` , we
-write it as:  
-
-
-
-Where `×` denotes the Cartesian product of set `X` and `Y`,
-and curried `f` (denoted by `h` here) is written as:  
-
-===
-
-```
-f: (X × Y) -> Z
-```
-
-
-
-```
-h: X -> (Y -> Z)
-```
-
-===
-
-# Procedural Macros
-
-These are functions that take code as input and spit out
-modified code as output. Powerful stuff. Rust has three
-kinds of proc-macros:
-
- - Function like macros  
- - Derive macros: `#[derive(...)]`, used to automatically
-   implement traits for structs/enums  
- - and Attribute macros: `#[test]`, usually slapped onto
-   functions  
-
-We will be using Attribute macros to convert a Rust function
-into a curried Rust function, which we should be able to
-call via: `function(arg1)(arg2)`.
-
-===
-
-===
-
-# Definitions
-
-Being respectable programmers, we define the input to and
-the output from our proc-macro. Here's a good non-trivial
-function to start out with:
-
-===
-
-```rust
-fn add(x: u32, y: u32, z: u32) -> u32 {
-  return x + y + z;
-}
-```
-
-===
-
-Hmm, what would our output look like? What should our
-proc-macro generate ideally? Well, if we understood currying
-correctly, we should accept an argument and return a
-function that accepts an argument and returns ... you get
-the point. Something like this should do:
-
-===
-
-```rust
-fn add_curried1(x: u32) -> ? {
-  return fn add_curried2 (y: u32) -> ? {
-    return fn add_curried3 (z: u32) -> u32 {
-      return x + y + z;
-    }
-  }
-}
-```
-
-===
-
-# Return types
-
-We have placed `?`s in place of return
-types. Let's try to fix that. `add_curried3` returns the
-'value', so `u32` is accurate. `add_curried2` returns
-`add_curried3`. What is the type of `add_curried3`? It is a
-function that takes in a `u32` and returns a `u32`.  So a
-`fn(u32) -> u32` will do right? No, I'll explain why in the
-next point, but for now, we will make use of the `Fn` trait,
-our return type is `impl Fn(u32) -> u32`. This basically
-tells the compiler that we will be returning something
-function-like, a.k.a, behaves like a `Fn`. Cool! 
-
-===
-
-===
-
-If you have been following along, you should be able to tell
-that the return type of `add_curried1` is:
-
-===
-
-```
-impl Fn(u32) -> (impl Fn(u32) -> u32)
-```
-
-===
-
-We can drop the parentheses because `->` is right associative:
-
-===
-
-```
-impl Fn(u32) -> impl Fn(u32) -> u32
-```
-
-===
-
-# Accessing environment
-
-A function cannot access it's environment. Our solution
-will not work. `add_curried3` attempts to access `x`, which
-is not allowed! A closurehowever, can. If we are
-returning a closure, our return type must be `impl Fn`, and
-not `fn`.  The difference between the `Fn` trait and
-function pointers is beyond the scope of this post.
-
-===
-
-===
-
-# Refinement
-
-Armed with knowledge, we refine our expected output, this
-time, employing closures:
-
-===
-
-```rust
-fn add(x: u32) -> impl Fn(u32) -> impl Fn(u32) -> u32 {
-  return move |y| move |z| x + y + z;
-}
-```
-
-===
-
-Alas, that does not compile either! It errors out with the
-following message:
-
-===
-
-```
-error[E0562]: `impl Trait` not allowed outside of function
-and inherent method return types
-  --> src/main.rs:17:37
-   |
-   | fn add(x: u32) -> impl Fn(u32) -> impl Fn(u32) -> u32
-   |                                   ^^^^^^^^^^^^^^^^^^^
-
-```
-
-===
-
-You are allowed to return an `impl Fn` only inside a
-function. We are currently returning it from another return!
-Or at least, that was the most I could make out of the error
-message.
-
-We are going to have to cheat a bit to fix this issue; with
-type aliases and a convenient nightly feature:
-
-
-===
-
-```rust
-#![feature(type_alias_impl_trait)]  // allows us to use `impl Fn` in type aliases!
-
-type T0 = u32;                 // the return value when zero args are to be applied
-type T1 = impl Fn(u32) -> T0;  // the return value when one arg is to be applied
-type T2 = impl Fn(u32) -> T1;  // the return value when two args are to be applied
-
-fn add(x: u32) -> T2 {
-  return move |y| move |z| x + y + z;
-}
-```
-
-===
-# The In-Betweens
-
-Let us write the magical bits that take us from function to
-curried function. 
-
-Initialize your workspace with `cargo new --lib currying`.
-Proc-macro crates are libraries with exactly one export, the
-macro itself. Add a `tests` directory to your crate root.
-Your directory should look something like this:
-
-===
-
-```
-.
-├── Cargo.toml
-├── src
-│   └── lib.rs
-└── tests
-    └── smoke.rs
-```
-
-===
-# Dependencies
-
-We will be using a total of 3 external crates:
-
- - [proc_macro2](https://docs.rs/proc-macro2/1.0.12/proc_macro2/)
- - [syn](https://docs.rs/syn/1.0.18/syn/index.html)
- - [quote](https://docs.rs/quote/1.0.4/quote/index.html)
-
-Here's a sample `Cargo.toml`:
-
-===
-
-```
-# Cargo.toml
+```toml
+[package]
+name = "engine"
+version = "0.1.0"
 
 [dependencies]
-proc-macro2 = "1.0.9"
-quote = "1.0"
-
-[dependencies.syn]
-version = "1.0"
-features = ["full"]
-
-[lib]
-proc-macro = true  # this is important!
+pleco = "0.5.0"
 ```
 
+===
+Some of the features `pleco` implements out of the box:
+- Bitboard representation of Piece Locations:
+- Ability for concurrent Board State access, for use by parallel searchers
+- Full Move-generation Capabilities, including generation of pseudo-legal moves
+- Statically computed lookup-tables (including Magic Bitboards)
+- Zobrist hashing
+- A transposition table --> Lightning fast lookup table storing information for a board
+- Pre-implemented searchers, some of which using [rayon.rs](https://crates.io/crates/rayon) for easy parallelism
+
+===
+
+```rust
+use pleco::{Board, PieceType, Player};
+
+fn main() {
+    let board = Board::start_pos();
+
+    // count pawns belonging to white
+    let piece_no = board.count_piece(
+        Player::White, 
+        PieceType::P
+    );
+    assert_eq!(piece_no, 8);
+
+    println!("{}", board.fen());
+}
+```
+
+===
+
+I'm going to split my engine into two broad sections:
+- Search --> This handles how the search space is traversed
+- Evaluation --> This handles how positions are statically evaluated
+
+===
+
+===
+
+# Search
+
+We're going to focus on a simple minimax search for now. Ideally, we'd build a system which allows us to write drop-in replacements for the search algorithm without affecting the other parts of the engine.
+
+===
+
+===
+
+# Evaluation
+
+Let's write a simple evaluation function which takes a position and returns a score representing the advantage for the player whose turn it currently is.
+
+Pleco provides us with a helpful `ScoredMove` we can use to keep track of nodes we decide to stop searching on and their respective scores.
+
+===
+
+```Rust
+fn evaluate(){
+
+}
+```

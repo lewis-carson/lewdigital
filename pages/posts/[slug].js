@@ -9,6 +9,7 @@ import Post from '../../components/Post'
 import remarkCapitalize from 'remark-capitalize'
 import numWords from 'num-words'
 import rehypeHighlight from 'rehype-highlight'
+
 import { motion } from 'framer-motion'
 import animate from '../../utils/animate'
 

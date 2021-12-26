@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css');
 
 @font-face {
     font-family: 'parabole';

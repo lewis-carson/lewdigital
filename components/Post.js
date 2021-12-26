@@ -18,7 +18,7 @@ function Header({ children }) {
     </div>
 }
 
-const Pad = ({ children }) => <div className='lg:mx-16 px-[5vw]'>{children}</div>
+const Pad = ({ children }) => <div className='lg:mx-28 mx-[5vw]'>{children}</div>
 
 const components = {
     a: A,
@@ -31,10 +31,25 @@ const components = {
     li: ({ children }) =>
         <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
-    p: ({ children }) => <Pad><div>{children}</div></Pad>,
+    p: ({ children }) => <Pad>{children}</Pad>,
     ul: ({ children }) =>
         <ul className='list-[square]'><Pad>{children}</Pad></ul>,
-    Head
+    Head,
+    img: ({ src, alt }) =>
+        <img src={src} alt={alt} className='px-10' />,
+    blockquote: ({ children }) =>
+        <div className='bg-[#f7f7f7] py-5 lg:py-10 my-5 space-y-5 italic 
+            bg-gradient-to-b from-transparent via-offwhite to-transparent'>
+            {children}
+        </div>,
+    cite: ({ children }) =>
+        <Pad>
+            <span className='text-gray-400'>
+                {children}
+            </span>
+        </Pad>,
+    hr: ({ children }) =>
+        <div className="w-full bg-[#f7f7f7] h-5 m-10"></div>
 }
 
 //  < MDXRemote { ...source } components = { components } />
@@ -43,9 +58,10 @@ import { motion } from 'framer-motion';
 
 const Column = ({ children, isFigure }) =>
     <div
-        className="lg:w-[50vw] flex lg:pb-5"
+        className="lg:w-[50vw] flex lg:pb-20"
         style={{
-            backgroundColor: (isFigure ? "#f7f7f7" : "")
+            backgroundColor: (isFigure ? "#f7f7f7" : ""),
+            lineHeight: (isFigure ? "2.3rem" : "1.9rem")
         }}>
         <div className='py-10'>
             {children}
@@ -71,7 +87,7 @@ function FadeIn({ children, margin }) {
         >
             {children}
         </motion.div>
-        <div className='lg:hidden'>
+        <div className='lg:hidden space-y-5'>
             {children}
         </div>
     </div>
@@ -87,7 +103,7 @@ function FigurePair({ figure, annotation, hasFadeMargin = true }) {
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <Column>
             <Sticky>
-                <FadeIn margin={hasFadeMargin ? "-10% 0px -35% 0px" : ""}>
+                <FadeIn margin={hasFadeMargin ? "-10% 0% -35% 0%" : "0%"}>
                     {annotation}
                 </FadeIn>
             </Sticky>
@@ -95,7 +111,7 @@ function FigurePair({ figure, annotation, hasFadeMargin = true }) {
 
         <Column isFigure>
             <Sticky>
-                <FadeIn margin={hasFadeMargin ? "-10% 0px -35% 0px" : ""}>
+                <FadeIn margin={hasFadeMargin ? "-10% 0% -35% 0%" : "0%"}>
                     {figure}
                 </FadeIn>
             </Sticky>
@@ -104,7 +120,7 @@ function FigurePair({ figure, annotation, hasFadeMargin = true }) {
 }
 
 function Title({ frontMatter, timeToRead }) {
-    return <div className='lg:mx-16 lg:my-0 p-[5vw]'>
+    return <div className='lg:mx-28 m-[5vw]'>
         <div className='font-display font-black text-5xl xl:text-7xl'>
             {frontMatter.title}
         </div>

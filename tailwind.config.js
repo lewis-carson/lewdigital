@@ -8,10 +8,11 @@ module.exports = {
       "body": ["Inter", "Inter var"],
       "display": ["Parabole"],
     },
-    color: {
-      "offwhite": "#f7f7f7"
-    },
-    extend: {},
+    extend: {
+      colors: {
+        "offwhite": "#fffff8"
+      },
+    }
   },
   plugins: [],
 }

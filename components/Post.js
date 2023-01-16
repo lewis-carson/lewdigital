@@ -3,9 +3,11 @@ import { MDXRemote } from 'next-mdx-remote'
 import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { MathJax } from 'better-react-mathjax'
+import { Graphviz } from 'graphviz-react'
 
 function A({ href, children }) {
-    return <Link href={href}>
+    return <Link href={href} scroll={false}>
         <span className="text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
             {children}
         </span>
@@ -18,19 +20,29 @@ function Header({ children }) {
     </div>
 }
 
+function Header2({ children }) {
+    return <div className="leading-[2rem] text-left font-display font-black text-[2rem] ">
+        <Pad>{children}</Pad>
+    </div>
+}
+
 const Pad = ({ children }) => <div className='lg:mx-28 mx-[5vw]'>{children}</div>
+
+//const Graphviz = dynamic(() => import('graphviz-react'), { ssr: false });
+
 
 const components = {
     a: A,
     strong: ({ children }) =>
         <span className='text-2xl font-display'>{children}</span>,
     pre: ({ children }) =>
-        <pre className='w-[100vw] lg:w-[50vw] px-10'>{children}</pre>,
+        <pre className='w-[100vw] lg:w-[50vw] lg:px-10 px-[5vw]'>{children}</pre>,
     ol: ({ children }) =>
         <ol className='list-decimal'><Pad>{children}</Pad></ol>,
     li: ({ children }) =>
         <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
+    h2: ({ children }) => <Header2>{children}</Header2>,
     p: ({ children }) => <Pad>{children}</Pad>,
     ul: ({ children }) =>
         <ul className='list-[square]'><Pad>{children}</Pad></ul>,
@@ -38,8 +50,8 @@ const components = {
     img: ({ src, alt }) =>
         <img src={src} alt={alt} className='px-10' />,
     blockquote: ({ children }) =>
-        <div className='bg-[#f7f7f7] py-5 lg:py-10 my-5 space-y-5 italic 
-            bg-gradient-to-b from-transparent via-offwhite to-transparent'>
+        <div className='py-16 italic 
+        bg-gradient-to-r from-[offwhite] via-transparent to-transparent border-y-4 border-dashed'>
             {children}
         </div>,
     cite: ({ children }) =>
@@ -49,7 +61,10 @@ const components = {
             </span>
         </Pad>,
     hr: ({ children }) =>
-        <div className="w-full bg-[#f7f7f7] h-5 m-10"></div>
+        <div className="w-full bg-[#f1f1f1] my-10"></div>,
+    m: ({ children }) => <MathJax inline={true} className='lg:mx-28 mx-[5vw] text-2xl'>{"`" + children.toString() + "`"}</MathJax>,
+
+
 }
 
 //  < MDXRemote { ...source } components = { components } />
@@ -60,7 +75,7 @@ const Column = ({ children, isFigure }) =>
     <div
         className="lg:w-[50vw] flex lg:pb-20"
         style={{
-            backgroundColor: (isFigure ? "#f7f7f7" : ""),
+            backgroundColor: (isFigure ? "#f1f1f1" : ""),
             lineHeight: (isFigure ? "2.3rem" : "1.9rem")
         }}>
         <div className='py-10'>
@@ -127,7 +142,7 @@ function Title({ frontMatter, timeToRead }) {
 
         <div className="h-5 lg:h-10"></div>
 
-        <A href="/blog">
+        <A href="/">
             <span className="text-gray-400 font-semibold hover:text-gray-200 transition-all">
                 {"<---"}
             </span>
@@ -155,7 +170,7 @@ export default function Post({ s, frontMatter, timeToRead }) {
                 <div
                     className="lg:w-1/2 flex lg:pb-5"
                     style={{
-                        backgroundColor: "#f7f7f7"
+                        backgroundColor: "#f1f1f1"
                     }}>
                 </div >
             </div>
@@ -168,17 +183,23 @@ export default function Post({ s, frontMatter, timeToRead }) {
         <FigurePair
             figure={<></>}
             annotation={
-                <div className='pt-32'>
+                <div className='lg:pt-32'>
                     <Pad>
                         <div className='font-display text-4xl pb-5'>Thanks for reading.</div>
                         <div className='pt-4 text-xl'>
                             <A href="/">{"<--- "} <span className='float-right'>Home</span></A>
                             <div className="h-3"></div>
-                            <A href="/blog">{"<--- "} <span className='float-right'>Blog</span> </A>
+                            {/*'<A href="/blog">{"<--- "} <span className="float-right">Blog</span> </A>'*/}
                         </div>
                     </Pad>
-                </div>
+                </div >
             }
         />
     </div >
 }
+
+/*
+Serpentine
+Hercules
+Tunic
+*/

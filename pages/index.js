@@ -4,13 +4,21 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
 import animate from "../utils/animate";
+import { BlogWidget } from './blog';
+import { postFilePaths, POSTS_PATH } from '../utils/mdxUtils'
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
 
-const delay = 2
+const delay = 0.3
+const fade_out_duration = 0.2
+const fade_in_duration = fade_out_duration
+const slide_over_duration = 0.5
 
 function Nametag({ onEnd }) {
   return <motion.div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
     <motion.div
-      className='text-7xl lg:text-8xl font-display font-bold'
+      className='text-4xl lg:text-6xl font-display font-bold'
       initial={{
         opacity: 1,
       }}
@@ -23,7 +31,7 @@ function Nametag({ onEnd }) {
 
       transition={{
         type: 'easeInOut',
-        duration: 1
+        duration: fade_out_duration
       }}
     >
       <motion.span
@@ -31,21 +39,19 @@ function Nametag({ onEnd }) {
           left: "0%"
         }}
         animate={{
-          left: "33.333%"
+          left: "27%"
         }}
 
         transition={{
           type: 'easeInOut',
-          duration: 1,
+          duration: slide_over_duration,
           delay: delay
         }}
 
         onAnimationComplete={onEnd}
 
         className='relative'
-      >
-        lew
-      </motion.span>
+      >Lewis </motion.span>
       <motion.span
         initial={{
           left: "0%",
@@ -53,17 +59,17 @@ function Nametag({ onEnd }) {
         }}
         animate={{
           opacity: 0,
-          left: "33.333%"
+          left: "27%"
         }}
 
         transition={{
           type: 'easeInOut',
-          duration: 1,
+          duration: slide_over_duration,
           delay: delay
         }}
 
         className='relative'
-      >.digital</motion.span>
+      >Carson</motion.span>
     </motion.div>
   </motion.div >
 }
@@ -76,7 +82,7 @@ function A({ href, children }) {
   </Link>
 }
 
-function Details() {
+function Details({ posts }) {
   return <motion.div
     className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
 
@@ -90,31 +96,35 @@ function Details() {
 
     transition={{
       type: 'easeInOut',
-      duration: 1,
-      delay: 1
+      duration: fade_in_duration,
+      delay: fade_out_duration
     }}
     key="details"
   >
-    <div>
-      Lewis Carson
-      <div className="h-4"></div>
-      <ul>
-        <li>
-          <A href="mailto:torvimmm@gmail.com">mail</A>
+    <div className='lg:max-w-[30vw] space-y-4'>
+      <div className='font-bold'>
+        Lewis Carson
+      </div>
 
-        </li>
-        <li>
-          <A href="https://github.com/lew-d">github</A>
-        </li>
-        <li>
-          <A href="/blog">blog</A>
-        </li>
-      </ul>
+      <div>
+        Small experiments, etc.
+      </div>
+
+      <div>
+        <span>Please email me regarding academic or professional enquires. </span>
+        <A href="mailto:lewiscampbellcarson@gmail.com">mail</A>
+      </div>
+
+      <div className='font-bold'>Blog Posts</div>
+
+      <div>
+        <BlogWidget posts={posts} />
+      </div>
     </div>
   </motion.div >
 }
 
-export default function Home() {
+export default function Home({ posts }) {
   var [isOpen, setIsOpen] = useState(false)
 
   var onEnd = () => {
@@ -130,10 +140,25 @@ export default function Home() {
           {
             !isOpen ?
               <Nametag onEnd={onEnd} key="nametag" /> :
-              <Details key="details" />
+              <Details key="details" posts={posts} />
           }
         </AnimatePresence>
       </main>
     </motion.div>
   )
+}
+
+export function getStaticProps() {
+  const posts = postFilePaths.map((filePath) => {
+    const source = fs.readFileSync(path.join(POSTS_PATH, filePath))
+    const { content, data } = matter(source)
+
+    return {
+      content,
+      data,
+      filePath,
+    }
+  })
+
+  return { props: { posts } }
 }

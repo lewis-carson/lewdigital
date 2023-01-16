@@ -1,6 +1,5 @@
 import fs from 'fs'
 import matter from 'gray-matter'
-import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
 import Layout from '../../components/Layout'
 import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
@@ -9,7 +8,8 @@ import Post from '../../components/Post'
 import remarkCapitalize from 'remark-capitalize'
 import numWords from 'num-words'
 import rehypeHighlight from 'rehype-highlight'
-
+import { serialize } from 'next-mdx-remote/serialize'
+import { unified } from 'unified'
 import { motion } from 'framer-motion'
 import animate from '../../utils/animate'
 
@@ -22,10 +22,10 @@ async function serial(block, data) {
         gfm: true,
         mdxOptions: {
             remarkPlugins: [
-                remarkCapitalize
+                remarkCapitalize,
             ],
             rehypePlugins: [
-                rehypeHighlight
+                rehypeHighlight,
             ],
         },
         scope: data,

@@ -16,7 +16,7 @@
 */
 
 /*
-base00  #f7f7f7  Default Background
+base00  #f1f1f1  Default Background
 base01  #e3e3e3  Lighter Background (Used for status bars, line number and folding marks)
 base02  #b9b9b9  Selection Background
 base03  #ababab  Comments, Invisibles, Line Highlighting
@@ -46,7 +46,7 @@ code.hljs {
 
 .hljs {
   color: #464646;
-  background: #f7f7f7;
+  background: #f1f1f1;
 }
 
 .hljs::selection,
@@ -59,8 +59,7 @@ code.hljs {
 /* purposely do not highlight these things */
 .hljs-formula,
 .hljs-params,
-.hljs-property
-{}
+.hljs-property {}
 
 /* base03 - #ababab -  Comments, Invisibles, Line Highlighting */
 .hljs-comment {
@@ -106,13 +105,12 @@ code.hljs {
 /* base0A - Classes, Markup Bold, Search Text Background */
 .hljs-title,
 .hljs-class .hljs-title,
-.hljs-title.class_
-{
+.hljs-title.class_ {
   color: #a0a0a0;
 }
 
 .hljs-strong {
-  font-weight:bold;
+  font-weight: bold;
   color: #a0a0a0;
 }
 
@@ -126,7 +124,8 @@ code.hljs {
 
 /* base0C - Support, Regular Expressions, Escape Characters, Markup Quotes */
 .hljs-built_in,
-.hljs-doctag, /* guessing */
+.hljs-doctag,
+/* guessing */
 .hljs-quote,
 .hljs-keyword.hljs-atrule,
 .hljs-regexp {
@@ -153,6 +152,7 @@ code.hljs {
 .hljs-keyword {
   color: #747474;
 }
+
 .hljs-emphasis {
   color: #747474;
   font-style: italic;
@@ -165,8 +165,7 @@ code.hljs {
   from leaking into meta by accident
 */
 .hljs-meta .hljs-keyword,
-.hljs-meta .hljs-string
-{
+.hljs-meta .hljs-string {
   color: #5e5e5e;
 }
 

@@ -13,30 +13,35 @@ function A({ href, children }) {
     </Link>
 }
 
-export default function Index({ posts }) {
+export function BlogWidget({ posts }) {
+    return <><div>
+        {posts.map((post) => (
+            <div key={post.filePath}>
+                <Link
+                    as={`/posts/${post.filePath.replace(/\.mdx?$/, '')}`}
+                    href={`/posts/[slug]`}
+                >
+                    <span className="whitespace-nowrap text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
+                        {post.data.title} ↗
+                    </span>
+                </Link>
+            </div>
+        ))}
+    </div></>
+}
+
+export default function Blog({ posts }) {
     return (
         <Layout>
             <div className='max-w-[70vw] lg:max-w-[25vw]'>
+
                 <A href="/">
                     <span className="text-gray-400 text-2xl font-semibold hover:text-gray-200 transition-all">
                         {"<---"}
                     </span>
                 </A>
                 <div className="font-display text-5xl mb-5 mt-3 font-bold">Blog</div>
-                <div className="space-y-2">
-                    {posts.map((post) => (
-                        <div key={post.filePath}>
-                            <Link
-                                as={`/posts/${post.filePath.replace(/\.mdx?$/, '')}`}
-                                href={`/posts/[slug]`}
-                            >
-                                <span className="whitespace-nowrap text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
-                                    {post.data.title} ↗
-                                </span>
-                            </Link>
-                        </div>
-                    ))}
-                </div>
+                <BlogWidget posts={posts} />
             </div>
         </Layout >
     )

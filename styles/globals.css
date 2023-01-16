@@ -7,5 +7,14 @@
 
 @font-face {
     font-family: 'parabole';
-    src:  url('/parabole.woff2') format('woff2');
+    src: url('/parabole.woff2') format('woff2');
+}
+
+html {
+    background-color: #fefefe;
+}
+
+td {
+    padding: 1rem;
+    padding-bottom: 2rem;
 }

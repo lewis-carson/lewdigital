@@ -1,0 +1,13 @@
+/Users/lew/Documents/lewdigital/posts/shell/target/debug/deps/fd_lock-ca670101d9a99b74.rmeta: /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/lib.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/read_guard.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/rw_lock.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/write_guard.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/mod.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/mod.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/read_guard.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/rw_lock.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/write_guard.rs
+
+/Users/lew/Documents/lewdigital/posts/shell/target/debug/deps/fd_lock-ca670101d9a99b74.d: /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/lib.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/read_guard.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/rw_lock.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/write_guard.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/mod.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/mod.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/read_guard.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/rw_lock.rs /Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/write_guard.rs
+
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/lib.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/read_guard.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/rw_lock.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/write_guard.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/mod.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/mod.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/read_guard.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/rw_lock.rs:
+/Users/lew/.cargo/registry/src/github.com-1ecc6299db9ec823/fd-lock-3.0.8/src/sys/unix/write_guard.rs:

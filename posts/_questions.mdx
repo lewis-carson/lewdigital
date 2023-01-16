@@ -1,0 +1,84 @@
+---
+title: Building maths questions
+---
+
+
+Recently I watched the MIT integration bee and it got me thinking. How do you come up with these questions? Where do you start when you want to write a difficult integral?
+
+The commentators gave some hints:
+
+> Some of the most gnarly looking questions often became incredibly simple when integrated.
+
+===
+
+Question:
+
+---
+
+<m>int_0^infty (e^-2x * sin(3x)) / x dx</m>
+
+---
+
+Evaluates to:
+
+---
+
+<m>arctan(3/2)</m>
+
+Cool, right? 
+
+===
+
+## Write your own questions
+
+Why don't we use this concept to write our *own* questions. 
+
+1. Pick a really simple function
+2. Mutate it a few times (we'll go into how this is done later)
+3. Take the derivative
+4. Pose the derivative as an integral
+
+As you can see, it's easy to make an integral which is wayyyy too hard with just a few simple steps.
+
+Generating an easy integral is also trivial.
+
+However, getting the right amount of difficulty (hard enough to be non-trivial, but easy enough that it can be solved in 4 minutes) is challenging.
+
+===
+
+<m>sin(x)</m>
+
+↓
+
+---
+
+<m>sin(x)cos(x)</m>
+
+↓
+
+---
+
+<m>sin^2(3x)cos(x+2)</m>
+
+↓
+
+---
+
+<m>int (-5*sin(7*x+2)+7*sin(5*x-2)-70*sin(x+2))/140 dx</m>
+
+===
+
+What if we add a "weight" to each operation?
+
+Then, we can assign a budget to the difficulty of each question. Some permutations, like adding a constant, are inexpensive and do not add to the difficulty of an integral much.
+
+Some operations, such as an inverse, may make an integral extremely difficult.
+
+===
+
+|||
+|-----------------|-----------|
+| <m> ? + 5 </m>    | Weight: 1 |
+| <m> ? * 5 </m>  | Weight: 2 |
+| <m> ? ^ 5 </m> | Weight: 3 |
+| <m> 1/? </m>    | Weight: 5 |

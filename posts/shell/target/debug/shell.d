@@ -1,1 +1,0 @@
-/Users/lew/Documents/lewdigital/posts/shell/target/debug/shell: /Users/lew/Documents/lewdigital/posts/shell/src/builtins.rs /Users/lew/Documents/lewdigital/posts/shell/src/env.rs /Users/lew/Documents/lewdigital/posts/shell/src/foreground.rs /Users/lew/Documents/lewdigital/posts/shell/src/main.rs

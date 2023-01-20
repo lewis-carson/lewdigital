@@ -60,6 +60,44 @@ impl Node for Dir {
 
 ===
 
+# Traversal
+
+Let's define a function, `walk` which simply walks depth-first through a tree.
+
+It's that simple! From a few rules, we can derive a lot of functionality.
+
+===
+
+```rust
+
+fn walk(tree: &mut Tree<Node>, id: Id) {
+  for child in &mut tree.children(id) {
+    println!("{:?}", tree.get(*child).unwrap());
+    walk(tree, *child);
+  }
+}
+
+```
+
+===
+
+# Unrendered
+
+Sometimes, we only want to iterate over parts of the tree which have already been rendered. This might be because creating new branches is expensive, or because we want to avoid traversing deeper than we have already.
+
+===
+
+<br/>
+
+```
+tree.children(id)
+```
+↓
+```
+tree.rendered_children(id)
+```
+
+===
 
 Writing `willow` introduced me to making and publishing rust crates. It's unlikely to be useful to anyone else, but I'm glad I wrote it. It was a fun exercise.
 

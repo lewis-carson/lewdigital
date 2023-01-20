@@ -76,7 +76,7 @@ function Nametag({ onEnd }) {
 
 function A({ href, children }) {
   return <Link href={href}>
-    <span className="text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
+    <span className="inline-block text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
       {children} ↗
     </span>
   </Link>
@@ -107,12 +107,15 @@ function Details({ posts }) {
       </div>
 
       <div>
-        Small experiments, etc.
+        Hello!
+      </div>
+      <div>
+        I enjoy building small projects online. <A href="https://github.com/lewis-carson">Github</A>
       </div>
 
       <div>
         <span>Please email me regarding academic or professional enquires. </span>
-        <A href="mailto:lewiscampbellcarson@gmail.com">mail</A>
+        <A href="mailto:lewiscampbellcarson@gmail.com">Email</A>
       </div>
 
       <div className='font-bold'>Blog Posts</div>

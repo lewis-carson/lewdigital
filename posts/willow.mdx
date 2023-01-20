@@ -1,0 +1,66 @@
+---
+title: Building Lazy Trees
+---
+
+Today I wrote a small crate [willow](https://crates.io/crates/willowtree) that can be used to lazily traverse trees. It's a bit of a niche library, but I thought I'd share it anyway.
+
+The idea is that you can build a tree of nodes, and then traverse it in a lazy fashion. This is useful if you have a tree that is very deep, but you only need to use a small part of it.
+
+You write code as though the entire tree exists, and `willow` will quitely add and cache nodes as you traverse the tree.
+
+Willow clocks in at about 60 SLOC: pretty small indeed!
+
+===
+
+![Willow Tree](https://images.unsplash.com/photo-1606596597449-d0dcccbba517?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8)
+
+===
+
+# Chess
+
+Chess has an **extremely** large branching factor. Sometimes, it's useful to abstract away move generation and focus on how we traverse a position. This is where lazy trees come in.
+
+This is also applicable to other games with large branching factors, such as Go.
+
+===
+
+```rust
+
+impl Node for Board {
+  fn children(&self) -> Vec<Self> {
+    self.legal_moves()
+  }
+
+  fn leaf(&self) -> bool {
+    self.is_over()
+  }
+}
+
+```
+
+===
+
+# File systems
+
+File systems are also a good example of a tree that could be very deep but onlt as small part of it is used. For example, if you're looking for a file in a directory, you don't need to traverse the entire directory tree.
+
+===
+
+```rust
+impl Node for Dir {
+  fn children(&self) -> Vec<Self> {
+    self.subdirs()
+  }
+
+  fn leaf(&self) -> bool {
+    self.files().is_empty()
+  }
+}
+```
+
+===
+
+
+Writing `willow` introduced me to making and publishing rust crates. It's unlikely to be useful to anyone else, but I'm glad I wrote it. It was a fun exercise.
+
+===

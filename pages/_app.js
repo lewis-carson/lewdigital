@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps, router }) {
     <div className='font-body text-lg'>
 
       <Head>
-        <title>lew.digital</title>
+        <title>Lewis Carson</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

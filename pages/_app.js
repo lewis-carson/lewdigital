@@ -4,6 +4,7 @@ import '../styles/globals.css'
 import '../styles/syntax.scss'
 import { AnimatePresence } from 'framer-motion'
 import Head from 'next/head'
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps, router }) {
   const url = `https://lew.digital${router.route}`
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps, router }) {
 
       <AnimatePresence exitBeforeEnter>
         <Component {...pageProps} key={url} canonical={url} />
+        <Analytics />
       </AnimatePresence>
     </div>
   </MathJaxContext>

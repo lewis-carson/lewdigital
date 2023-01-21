@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@vercel/analytics": "^0.1.8",
     "better-react-mathjax": "^2.0.2",
     "framer-motion": "^5.5.5",
     "graphviz-react": "^1.2.5",

@@ -1,14 +1,14 @@
 ---
-title: Building Lazy Trees
+title: Trees Too Large to Count
 ---
 
-Today I wrote a small crate [willow](https://crates.io/crates/willowtree) that can be used to lazily traverse trees. It's a bit of a niche library, but I thought I'd share it anyway.
+Today I wrote a small crate [willow](https://github.com/lewis-carson/willow) that can be used to lazily traverse trees. It's a bit of a niche library, but I thought I'd share it anyway.
 
 The idea is that you can build a tree of nodes, and then traverse it in a lazy fashion. This is useful if you have a tree that is very deep, but you only need to use a small part of it.
 
 You write code as though the entire tree exists, and `willow` will quitely add and cache nodes as you traverse the tree.
 
-Willow clocks in at about 60 SLOC: pretty small indeed!
+Willow clocks in at about 90 SLOC: pretty small indeed!
 
 ===
 
@@ -85,6 +85,8 @@ fn walk(tree: &mut Tree<Node>, id: Id) {
 
 Sometimes, we only want to iterate over parts of the tree which have already been rendered. This might be because creating new branches is expensive, or because we want to avoid traversing deeper than we have already.
 
+Traversing rendered nodes is as simple as changing `children` to `rendered_children`.
+
 ===
 
 <br/>
@@ -95,6 +97,39 @@ tree.children(id)
 ↓
 ```
 tree.rendered_children(id)
+```
+
+===
+
+# Transposition
+
+In some trees there will be some nodes which naturally have multiple parents:
+
+- Chess: the same position can be reached from different positions
+- Symbolic links: a directory can be the target of a symlink from multiple places, and be the child of a parent directory simultaneously
+
+We can solve this using a transposition table: define a hash function for each node, and use it to check if a node has already been added to the tree. If it has, we can redirect to the first instance of the node.
+
+This, technically, is no longer a tree, but a directed acyclic graph. However, it's still useful to think of it as a tree.
+
+## Performance
+
+At first, it may seem like this could be extremely slow. Searching through a hash table for a node is `O(n)`, and we only have to do it when we add nodes.
+
+In practice, this is not a problem. The performance impact of a hash table on small trees is negligible, and the performance impact of a hash table on large trees compensates for the cost of maintaining two identical sub-trees below nodes with the same hash.
+
+===
+
+```rust
+// check if child is already in the tree
+if let Some(c) = self.hash_table.get(&child) {
+    // if so, append the existing node
+    // instead of creating a new one
+    id.append(*c, &mut self.arena);
+    continue;
+}
+
+self.add_child(id, child);
 ```
 
 ===

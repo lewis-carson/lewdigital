@@ -1,0 +1,183 @@
+---
+title: Computing Partial Derivatives
+---
+
+In the following article I'll write simple implementations of forwards mode and reverse mode automatic differentiation in Rust. Unfortunately, this is an *extremely* large topic and I can't cover everything in a 5 minute blog post. I'll try to keep it as simple as possible, but I might gloss over some finer points.
+
+Automatic differentiation is a technique to compute the derivative of a function. It is used in machine learning to compute the gradient of a loss function w.r.t. the parameters of a model. This is used, among other things, to optimize the model.
+
+===
+
+===
+
+# Forwards mode: Dual Numbers
+
+We can use a system called dual numbers which allows us to compute a function and its derivative at the same time.
+
+Dual numbers works as following: we have a type `T` which we can add, multiply, etc. We then define a new type `Dual<T>` which is a tuple of two `T`s.
+
+<br/>
+<m>z = a + bε</m>
+<br/>
+
+Note that: 
+
+<br/>
+<m>ε^2 = 0</m>
+<br/>
+
+It follows that:
+<br/>
+<m> (a+bε)(c+dε)=ac+(ad+bc)ε</m>
+
+<br/>
+<br/>
+
+## Dual number arithmatic
+
+When we add dual numbers, we add the real parts and the dual parts. When we multiply dual numbers, we use the product rule to compute the derivative of the dual part. We use the quotient rule for division.
+
+To differentiate w.r.t. a variable, we set the dual part to 1. Every other variable gets set to 0 to indicate that they're constants.
+
+Unfortunately, dual numbers are not very efficient for computing derivatives of functions with many inputs. This is because, for each input we need to set the dual part to 1 (i.e. computing w.r.t. said input) and take another forward pass.
+
+However, most automatic differentiation is not done in the context of billions of weights, but rather optimizing over a small number of parameters.
+
+===
+
+```rust
+// Note that `.wrt()` is called
+// before we start defining our function.
+
+let x = Value::new(2f64).wrt();
+let y = Value::new(3f64);
+
+let a = x * y;
+
+println!("Value: ", a.real());
+println!("Grad: ", a.grad());
+
+```
+
+===
+
+# Implementation
+
+Let's implement this as a generic struct `Value<T>` which can be used for any type `T` which implements `Clone` + `Copy` + `NumOps` + `Zero` + `One`.
+
+===
+
+```rust
+
+pub struct Value
+  <T: Clone + Copy + NumOps + Zero + One> {
+  real: T,
+  dual: T,
+}
+
+```
+
+===
+
+We need to implement `Zero` and `One` because we need to be able to set the dual part to 0 and 1 to signify which input we are computing the derivative w.r.t.
+
+===
+
+```rust
+pub fn new(real: T) -> Self {
+  Self {
+    real,
+    dual: T::zero(),
+  }
+}
+
+pub fn wrt(self) -> Self {
+  Self {
+    real: self.real,
+    dual: T::one(),
+  }
+}
+```
+
+===
+
+We can now implement the arithmatic operators for `Value<T>`.
+
+- As you can see, we add the real parts and the dual parts for the addition operator
+- For the multiplication operator, we need to use the product rule to compute the derivative
+- Likewise the division operator uses the quotient rule.
+
+===
+
+```rust
+impl<T: IsDual> Add for Value<T> {
+  type Output = Self;
+
+  fn add(self, other: Self) -> Self {
+    Self {
+      real: self.real + other.real,
+      dual: self.dual + other.dual,
+    }
+  }
+}
+
+impl<T: IsDual> Mul for Value<T> {
+  type Output = Self;
+
+  fn mul(self, other: Self) -> Self {
+    let product = self.real * other.real;
+
+    let vdu = self.real * other.dual;
+    let udv = self.dual * other.real;
+    Self {
+      real: product,
+      dual: vdu + udv,
+    }
+  }
+}
+
+```
+
+===
+
+# Reverse-mode: Tapes 
+
+Writing a reverse-mode automatic differentiation system is pretty tricky in Rust. Most of the time, you end up fighting the borrow checker which really doesn't like recursive types.
+
+I read an excellent blog post: [Reverse-mode automatic differentiation: a tutorial](https://rufflewind.com/2016-12-30/reverse-mode-automatic-differentiation), explaining how to implement reverse-mode automatic differentiation in Python. It uses a tape based approach to compute the derivatives. The tape is a list of operations which are applied to the input variables to compute the output. The tape is then traversed backwards to compute the derivatives.
+
+<br/>
+
+> Conceptually, it looks like this: 
+> ![tape](https://rufflewind.com/img/reverse-mode-automatic-differentiation-links.png)
+
+<br/>
+
+<cite>(Thank you, Rufflewind!)</cite>
+
+===
+
+===
+
+# Implementation
+
+I wanted to implement this generically, allowing users to define their own types given they implement traits such as `NumOps` + `Zero` + `One`.
+
+===
+
+```rust
+// Note that `.wrt()` is called
+// after we define our function
+
+let scope = Scope::new();
+let a = scope.value(7.0);
+let b = scope.value(11.0);
+let c = scope.value(13.0);
+
+let z = a * b + c;
+let grad = z.backwards();
+
+println!("dz/dx = {}", grad.wrt(a));
+println!("dz/dy = {}", grad.wrt(b));
+println!("dz/dy = {}", grad.wrt(c));
+```

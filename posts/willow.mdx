@@ -16,11 +16,17 @@ Willow clocks in at about 90 SLOC: pretty small indeed!
 
 ===
 
-# Chess
+## Chess
 
 Chess has an **extremely** large branching factor. Sometimes, it's useful to abstract away move generation and focus on how we traverse a position. This is where lazy trees come in.
 
 This is also applicable to other games with large branching factors, such as Go.
+
+<br/><br/><br/><br/>
+
+## File systems
+
+File systems are also a good example of a tree that could be very deep but only as small part of it is used. For example, if you're looking for a file in a directory, you don't need to traverse the entire directory tree.
 
 ===
 
@@ -37,14 +43,6 @@ impl Node for Board {
 }
 
 ```
-
-===
-
-# File systems
-
-File systems are also a good example of a tree that could be very deep but only as small part of it is used. For example, if you're looking for a file in a directory, you don't need to traverse the entire directory tree.
-
-===
 
 ```rust
 impl Node for Dir {
@@ -66,6 +64,16 @@ Let's define a function, `walk` which simply walks depth-first through a tree.
 
 It's that simple! From a few rules, we can derive a lot of functionality.
 
+<br/>
+<br/>
+<br/>
+
+## Unrendered
+
+Sometimes, we only want to iterate over parts of the tree which have already been rendered. This might be because creating new branches is expensive, or because we want to avoid traversing deeper than we have already.
+
+Traversing rendered nodes is as simple as changing `children` to `rendered_children`.
+
 ===
 
 ```rust
@@ -79,29 +87,21 @@ fn walk(tree: &mut Tree<Node>, id: Id) {
 
 ```
 
-===
-
-# Unrendered
-
-Sometimes, we only want to iterate over parts of the tree which have already been rendered. This might be because creating new branches is expensive, or because we want to avoid traversing deeper than we have already.
-
-Traversing rendered nodes is as simple as changing `children` to `rendered_children`.
-
-===
-
 <br/>
 
-```
+```rust
 tree.children(id)
 ```
+
 ↓
-```
+
+```rust
 tree.rendered_children(id)
 ```
 
 ===
 
-# Transposition
+## Transposition
 
 In some trees there will be some nodes which naturally have multiple parents:
 
@@ -112,11 +112,9 @@ We can solve this using a transposition table: define a hash function for each n
 
 This, technically, is no longer a tree, but a directed acyclic graph. However, it's still useful to think of it as a tree.
 
-## Performance
+### Performance
 
-At first, it may seem like this could be extremely slow. Searching through a hash table for a node is `O(n)`, and we only have to do it when we add nodes.
-
-In practice, this is not a problem. The performance impact of a hash table on small trees is negligible, and the performance impact of a hash table on large trees compensates for the cost of maintaining two identical sub-trees below nodes with the same hash.
+At first, it may seem like this could be extremely slow. In practice, this is not a problem. The performance impact of a hash table on small trees is negligible, and the performance impact of a hash table on large trees compensates for the cost of maintaining two identical sub-trees below nodes with the same hash.
 
 ===
 

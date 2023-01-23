@@ -26,6 +26,12 @@ function Header2({ children }) {
     </div>
 }
 
+function Header3({ children }) {
+    return <div className="leading-[2rem] text-left font-display font-black text-[1.5rem] ">
+        <Pad>{children}</Pad>
+    </div>
+}
+
 const Pad = ({ children }) => <div className='lg:mx-28 mx-[5vw]'>{children}</div>
 
 //const Graphviz = dynamic(() => import('graphviz-react'), { ssr: false });
@@ -43,14 +49,15 @@ const components = {
         <li className='my-2 ml-5'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
     h2: ({ children }) => <Header2>{children}</Header2>,
+    h3: ({ children }) => <Header3>{children}</Header3>,
     p: ({ children }) => <Pad>{children}</Pad>,
     ul: ({ children }) =>
         <ul className='list-[square]'><Pad>{children}</Pad></ul>,
     Head,
     img: ({ src, alt }) =>
-        <img src={src} alt={alt} className='px-10' />,
+        <img src={src} alt={alt} className='px-10 pt-5' />,
     blockquote: ({ children }) =>
-        <div className='py-16 italic 
+        <div className='py-10 italic 
         bg-gradient-to-r from-[offwhite] via-transparent to-transparent border-y-4 border-dashed'>
             {children}
         </div>,
@@ -62,7 +69,7 @@ const components = {
         </Pad>,
     hr: ({ children }) =>
         <div className="w-full bg-[#f1f1f1] my-10"></div>,
-    m: ({ children }) => <MathJax inline={true} className='lg:mx-28 mx-[5vw] text-2xl'>{"`" + children.toString() + "`"}</MathJax>,
+    m: ({ children }) => <MathJax inline={true} className='lg:mx-28 mx-[5vw] text-xl'>{"`" + children.toString() + "`"}</MathJax>,
 
 
 }
@@ -118,15 +125,15 @@ function FigurePair({ figure, annotation, hasFadeMargin = true }) {
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <Column>
             <Sticky>
-                <FadeIn margin={hasFadeMargin ? "-10% 0% -35% 0%" : "0%"}>
+                <div className='lg:block space-y-5'>
                     {annotation}
-                </FadeIn>
+                </div>
             </Sticky>
         </Column>
 
         <Column isFigure>
             <Sticky>
-                <FadeIn margin={hasFadeMargin ? "-10% 0% -35% 0%" : "0%"}>
+                <FadeIn margin={hasFadeMargin ? "0% 0% -20% 0%" : "0%"}>
                     {figure}
                 </FadeIn>
             </Sticky>

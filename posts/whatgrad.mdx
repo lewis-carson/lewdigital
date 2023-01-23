@@ -61,7 +61,7 @@ println!("Grad: ", a.grad());
 
 ===
 
-# Implementation
+## Implementation
 
 Let's implement this as a generic struct `Value<T>` which can be used for any type `T` which implements `Clone` + `Copy` + `NumOps` + `Zero` + `One`.
 
@@ -155,11 +155,7 @@ I read an excellent blog post: [Reverse-mode automatic differentiation: a tutori
 
 <cite>(Thank you, Rufflewind!)</cite>
 
-===
-
-===
-
-# Implementation
+## Implementation
 
 I wanted to implement this generically, allowing users to define their own types given they implement traits such as `NumOps` + `Zero` + `One`.
 
@@ -181,3 +177,9 @@ println!("dz/dx = {}", grad.wrt(a));
 println!("dz/dy = {}", grad.wrt(b));
 println!("dz/dy = {}", grad.wrt(c));
 ```
+
+===
+
+I've packaged the reverse mode automatic differentiation system in a crate called [whatgrad](https://crates.io/crates/whatgrad). It's still a work in progress, but it's already pretty usable.
+
+===

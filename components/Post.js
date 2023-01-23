@@ -146,6 +146,10 @@ function Title({ frontMatter, timeToRead }) {
         <div className='font-display font-black text-5xl xl:text-7xl'>
             {frontMatter.title}
         </div>
+        <br />
+        <div className='font-display font-black text-3xl xl:text-5xl'>
+            {frontMatter.subtitle}
+        </div>
 
         <div className="h-5 lg:h-10"></div>
 

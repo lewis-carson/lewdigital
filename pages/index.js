@@ -118,7 +118,7 @@ function Details({ posts }) {
         <A href="mailto:lewiscampbellcarson@gmail.com">Email</A>
       </div>
 
-      <div className='font-bold'>Blog Posts</div>
+      <div className='font-bold'>Projects</div>
 
       <div>
         <BlogWidget posts={posts} />

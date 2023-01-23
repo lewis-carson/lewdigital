@@ -14,17 +14,18 @@ function A({ href, children }) {
 }
 
 export function BlogWidget({ posts }) {
-    return <><div>
+    return <><div className='space-y-2'>
         {posts.map((post) => (
-            <div key={post.filePath}>
+            <div key={post.filePath} >
                 <Link
-                    as={`/posts/${post.filePath.replace(/\.mdx?$/, '')}`}
-                    href={`/posts/[slug]`}
+                    as={`/projects/${post.filePath.replace(/\.mdx?$/, '')}`}
+                    href={`/projects/[slug]`}
                 >
                     <span className="whitespace-nowrap text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
-                        {post.data.title} ↗
+                        {post.data.title}↗
                     </span>
                 </Link>
+                <div>{post.data.subtitle}</div>
             </div>
         ))}
     </div></>
@@ -40,7 +41,7 @@ export default function Blog({ posts }) {
                         {"<---"}
                     </span>
                 </A>
-                <div className="font-display text-5xl mb-5 mt-3 font-bold">Blog</div>
+                <div className="font-display text-5xl mb-5 mt-3 font-bold">Home</div>
                 <BlogWidget posts={posts} />
             </div>
         </Layout >

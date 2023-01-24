@@ -1,4 +1,5 @@
 ---
+pretext: Library
 title: whatgrad
 subtitle: Computing partial derivatives
 ---
@@ -158,7 +159,15 @@ I read an excellent blog post: [Reverse-mode automatic differentiation: a tutori
 
 ## Implementation
 
-I wanted to implement this generically, allowing users to define their own types given they implement traits such as `NumOps` + `Zero` + `One`.
+I wanted to implement this generically, allowing users to define their own types given they implement traits such as `NumOps` + `Zero` + `One`. This could lead to the use of some interesting primitive types (complex numbers, normal distributions, quaternions, anyone?)
+
+Behind the scenes, when you use an operator such as `+` or `*`, we create a new `Node` and push it onto the tape. The `Node` contains the location on the tape of both parents. It also contains fields for the partial derivative of each branch of the `Node`.
+
+Each value contains the index of the tape position where the `Node` is stored. This allows us to `grad.wrt(x)` to get the partial derivative of the output w.r.t. the x.
+
+On the backwards pass, we accumulate the derivatives of the output w.r.t. the inputs. We do this by traversing the tape backwards and using the chain rule to compute the derivatives.
+
+We can introduce constants by pushing a new node onto the tape with the value of the constant and setting the partial derivative of the constant to 1.
 
 ===
 
@@ -182,5 +191,7 @@ println!("dz/dy = {}", grad.wrt(c));
 ===
 
 I've packaged the reverse mode automatic differentiation system in a crate called [whatgrad](https://crates.io/crates/whatgrad). It's still a work in progress, but it's already pretty usable.
+
+If you noticed any mistakes in this article or have any suggestions, please let me know by [emailing me](mailto:lewiscampbellcarson@gmail.com).
 
 ===

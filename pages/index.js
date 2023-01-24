@@ -110,7 +110,7 @@ function Details({ posts }) {
         Hello!
       </div>
       <div>
-        I enjoy building small projects online. <A href="https://github.com/lewis-carson">Github</A>
+        I enjoy building small projects about whatever interests me. <A href="https://github.com/lewis-carson">Github</A>
       </div>
 
       <div>

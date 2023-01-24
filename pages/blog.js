@@ -22,7 +22,7 @@ export function BlogWidget({ posts }) {
                     href={`/projects/[slug]`}
                 >
                     <span className="whitespace-nowrap text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
-                        {post.data.title}↗
+                        ({post.data.pretext}) {post.data.title} ↗
                     </span>
                 </Link>
                 <div>{post.data.subtitle}</div>

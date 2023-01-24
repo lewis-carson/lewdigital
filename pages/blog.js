@@ -18,8 +18,8 @@ export function BlogWidget({ posts }) {
         {posts.map((post) => (
             <div key={post.filePath} >
                 <Link
-                    as={`/projects/${post.filePath.replace(/\.mdx?$/, '')}`}
-                    href={`/projects/[slug]`}
+                    as={`/${post.filePath.replace(/\.mdx?$/, '')}`}
+                    href={`/[slug]`}
                 >
                     <span className="whitespace-nowrap text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
                         ({post.data.pretext}) {post.data.title} ↗

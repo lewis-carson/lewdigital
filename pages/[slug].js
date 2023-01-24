@@ -1,17 +1,17 @@
 import fs from 'fs'
 import matter from 'gray-matter'
 import path from 'path'
-import Layout from '../../components/Layout'
-import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
+import Layout from '../components/Layout'
+import { postFilePaths, POSTS_PATH } from '../utils/mdxUtils'
 import readingTime from 'reading-time'
-import Post from '../../components/Post'
+import Post from '../components/Post'
 import remarkCapitalize from 'remark-capitalize'
 import numWords from 'num-words'
 import rehypeHighlight from 'rehype-highlight'
 import { serialize } from 'next-mdx-remote/serialize'
 import { unified } from 'unified'
 import { motion } from 'framer-motion'
-import animate from '../../utils/animate'
+import animate from '../utils/animate'
 
 export default function PostPage(props) {
     return <motion.div {...animate} key="post"> <Post {...props} /> </motion.div>

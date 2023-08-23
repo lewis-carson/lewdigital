@@ -21,7 +21,7 @@ function Header({ children }) {
 }
 
 function Header2({ children }) {
-    return <div className="leading-[2rem] text-left font-display font-black text-[2rem] ">
+    return <div className="leading-[2rem] text-left font-display font-black text-[2rem]">
         <Pad>{children}</Pad>
     </div>
 }
@@ -78,7 +78,7 @@ const components = {
 
 import { motion } from 'framer-motion';
 
-const Column = ({ children, isFigure }) =>
+const Column = ({ children, isFigure, inline }) =>
     <div
         className="lg:w-[50vw] flex lg:pb-20"
         style={{
@@ -121,7 +121,7 @@ function Sticky({ children }) {
     </div >
 }
 
-function FigurePair({ figure, annotation, hasFadeMargin = true }) {
+function FigurePair({ figure, annotation, hasFadeMargin = true, inline = false }) {
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <Column>
             <Sticky>
@@ -143,12 +143,13 @@ function FigurePair({ figure, annotation, hasFadeMargin = true }) {
 
 function Title({ frontMatter, timeToRead }) {
     return <div className='lg:mx-28 m-[5vw]'>
-        <div className='font-display font-black text-5xl xl:text-7xl'>
+        <div className='font-display text-5xl xl:text-7xl'>
             {frontMatter.title}
         </div>
         <br />
-        <div className='font-display font-black text-3xl xl:text-5xl'>
+        <div className='font-display  text-3xl xl:text-5xl'>
             {frontMatter.subtitle}
+
         </div>
 
         <div className="h-5 lg:h-10"></div>
@@ -168,8 +169,21 @@ export default function Post({ s, frontMatter, timeToRead }) {
         var figure = <MDXRemote {...source.figure} components={components} />
         var annotation = <MDXRemote {...source.annotation} components={components} />
 
-        return <FigurePair figure={annotation} annotation={figure} hasFadeMargin={i != 0} />
-    })
+        return <FigurePair figure={annotation} annotation={figure} inline={frontMatter.inline} hasFadeMargin={i != 0} />
+    });
+
+    if (frontMatter.inline) {
+        return <>
+            <Title frontMatter={frontMatter} timeToRead={timeToRead} />
+
+            <div className='pb-32'>
+                <div className='p-32 pr-[30vw] my-16 space-y-32'>{s.map((source, i) => {
+                    return <div className=''><MDXRemote {...source.figure} components={components} /></div>
+                })}</div>
+                <Pad><Return /></Pad>
+            </div>
+        </>
+    }
 
     return <div>
 
@@ -196,18 +210,19 @@ export default function Post({ s, frontMatter, timeToRead }) {
             annotation={
                 <div className='lg:pt-32'>
                     <Pad>
-                        <div className='font-display text-4xl pb-5'>Thanks for reading.</div>
-                        <div className='pt-4 text-xl'>
-                            <A href="/">{"<--- "} <span className='float-right'>Home</span></A>
-                            <div className="h-3"></div>
-                            {/*'<A href="/blog">{"<--- "} <span className="float-right">Blog</span> </A>'*/}
-                        </div>
+                        <Return />
                     </Pad>
                 </div >
             }
         />
     </div >
 }
+
+const Return = () => <><div className='font-display text-4xl pb-5'>Thanks for reading.</div><div className='pt-4 text-xl'>
+    <A href="/">{"<--- "} <span className='float-right'>Home</span></A>
+    <div className="h-3"></div>
+    {/*'<A href="/blog">{"<--- "} <span className="float-right">Blog</span> </A>'*/}
+</div></>
 
 /*
 Serpentine

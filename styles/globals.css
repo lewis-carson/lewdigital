@@ -10,6 +10,19 @@
     src: url('/parabole.woff2') format('woff2');
 }
 
+
+@font-face {
+    font-family: 'etbook';
+    src: url('/etbookot-roman-webfont.woff2') format('woff2');
+}
+
+
+@font-face {
+    font-family: 'etbook-display';
+    src: url('/et-book-display-italic-old-style-figures.woff2') format('woff2');
+}
+
+
 html {
     background-color: #fefefe;
 }

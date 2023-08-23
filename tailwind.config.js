@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     fontFamily: {
       "body": ["Inter", "Inter var"],
-      "display": ["Parabole"],
+      "display": ["etbook"],
+      "etbook-display": ["etbook-display"]
     },
     extend: {
       colors: {

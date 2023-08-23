@@ -18,7 +18,7 @@ const slide_over_duration = 0.5
 function Nametag({ onEnd }) {
   return <motion.div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
     <motion.div
-      className='text-4xl lg:text-6xl font-display font-bold'
+      className='text-4xl lg:text-6xl font-display'
       initial={{
         opacity: 1,
       }}
@@ -102,7 +102,7 @@ function Details({ posts }) {
     key="details"
   >
     <div className='lg:max-w-[30vw] space-y-4'>
-      <div className='font-bold'>
+      <div className='text-4xl font-bold font-display'>
         Lewis Carson
       </div>
 
@@ -118,7 +118,7 @@ function Details({ posts }) {
         <A href="mailto:lewiscampbellcarson@gmail.com">Email</A>
       </div>
 
-      <div className='font-bold'>Projects</div>
+      <div className='font-semibold text-xl'>Projects</div>
 
       <div>
         <BlogWidget posts={posts} />

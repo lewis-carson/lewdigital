@@ -83,7 +83,8 @@ const Column = ({ children, isFigure, inline }) =>
         className="lg:w-[50vw] flex lg:pb-20"
         style={{
             backgroundColor: (isFigure ? "#f1f1f1" : ""),
-            lineHeight: (isFigure ? "2.3rem" : "1.9rem")
+            lineHeight: (isFigure ? "2.3rem" : "1.9rem"),
+            fontSize: (isFigure ? "1.1rem" : "1.1rem"),
         }}>
         <div className='py-10'>
             {children}

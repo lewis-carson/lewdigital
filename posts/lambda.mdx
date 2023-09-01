@@ -1,0 +1,213 @@
+---
+pretext: Project
+title: Compiling the Lambda Calculus, Part I
+subtitle: Sep 2023
+inline: false
+---
+
+I've never written a compiler, and I wanted to learn more about functional programming, so I wrote a compiler for the lambda calculus[?]. I (ambitiously) allocated a weekend to complete this but it took me over two weeks. I vastly underestimated the effort required to go from a stream of bytes to machine code.
+
+===
+
+===
+
+# Parsing
+
+Let's start with parsing. Untyped lambda calculus, on the surface, is pretty simple. It has two operators (abstract and apply), and a single symbol. However, this quickly becomes complicated to parse as:
+
+---
+
+1. Application associates to the left
+2. Abstraction associates to the right
+3. Application has higher precedence than abstraction
+4. Brackets can be used to override the standard precedence
+
+---
+
+With a bit of PEG grammar, we can parse this into a nested enum. This took a bit of trial and error to make sure that grouping was performed correctly. I'll omit some details for brevity, but the parser looks something like this:
+
+===
+
+```
+pub rule expression() -> Expr
+    = precedence! {
+        e:variable() { e }
+        --
+        "#" _ x:variable() _ "." _ s:@  ...
+        --
+        a:(@) _ b:@  ...
+        --
+        "(" _ e:expression() _ ")"  ...
+        --
+        "(" _ "#" _ x:variable() _ "." _ s:expression() _ ")" ...
+    }
+
+
+rule variable() -> Expr = ...
+
+rule _() =  quiet!{[' ' | '\t']*}
+```
+
+===
+
+Rust is particular about infinitely sized types and the borrow checker, so we `Box<>` anything that refers to itself, either directly or indirectly.
+
+From here, we can walk up and down the expression tree freely. AS you can see, I've taken to extend the standard lambda calculus implementation slightly further, allowing for multiple bound variables in the left hand side of the abstaction operator. To make this symmetrical, we allow for multiple expressions on the right hand side of `Application`. This comes in handy when it comes to closure conversion and hoisting. More on that later.
+
+Note that the lambda calculus implies some structural properties:
+
+---
+
+1. The left hand branch of an abstraction will always be a `Variable`
+2. Both right and left hand branches of an `Application` have no requirements
+3. Variables always act as a leaf node, and therefore have no children
+
+---
+
+===
+
+```rust
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub enum Expr {
+    Variable(String),
+    Abstraction(Vec<String>, Box<Expr>),
+    Application(Box<Expr>, Vec<Box<Expr>>),
+}
+```
+
+===
+
+# Alpha Renaming
+
+Alpha renaming is an important step in the process which disambiguates similarly named variables. For example, `λx. λx. x` becomes `λx. λy. y`. In the lambda calculus, variables can only be bound once and can only be consumed once. This makes having unique naming handy when we are transforming the tree later on.
+
+To make each variable name unique, we walk through the tree keeping track of a pointer to an int `c`. We start at the top, and rename each variable with its current name appended with `c`. We then pass a map of old variable names to new variable names into the children to make sure each bound variable has a corresponding free variable within the right branch of its relevant `Abstraction`.
+
+===
+
+```rust
+fn go(
+    env: &mut HashMap<String, String>,
+    e: &mut Expr,
+    c: &mut usize
+) -> Expr {
+    let transformed_expr = match e {
+        Expr::Variable(x) => {
+            // either look up x or use x 
+            let v = env.get(x).unwrap_or(x).clone();
+            Expr::Variable(v)
+        }
+
+        Expr::Abstraction(x, s) => {
+            let arg = x[0].clone();
+
+            // make new name
+            let x_prime = ...
+
+            // update env
+            env.insert(arg, x_prime.clone());
+
+            Expr::Abstraction(
+                vec![x_prime],
+                Box::new(go(env, s, c))
+            )
+        }
+        Expr::Application(a, b) => Expr::Application(
+            Box::new(go(env, a, c)),
+            vec![Box::new(go(env, &mut b[0], c))],
+        ),
+    };
+
+    transformed_expr
+}
+
+```
+
+===
+
+# Closure Conversion
+
+Closure conversion is used to make sure that an `Abstraction` has access to all the variables it needs within its left branch. There's a few ways to do this, but I chose to recursively walk through each `Abstraction`, and for each launch *another* recursive search for free variables. A free variable can be defined as one not bound in any left branch underneath the `Abstraction` we are currently searching through. This is where the `Vec<String>` came in useful earlier - we now append free variables to the list of bound variables for each `Abstraction`. Another common way to do this is with an `env` variable, or through extensions to the lambda calculus. For a functional language anymore complicated, this would be the method to choose.
+
+When converting closures, it's important to make sure your call sites reflect the abstractions they refer to. Again, this is an easy recursive walk through each `Application`. An issue I ran into was making sure the variables came in the right order at the call site - this ensures that the `Abstraction` arguments didn't get jumbled up when we searched for free variable earlier. There's a very straightforward solution to this - since each variable has a unique name, it has a clear order which we can apply to both the left hand side of each `Abstraction` and with each `Application`.
+
+===
+
+```rust
+fn free_variables(
+    e: &Expr,
+    bound: Vec<String>
+) -> Vec<String> {
+    match e {
+        Expr::Variable(x) => {
+            let mut fv = vec![];
+            fv.extend(bound.clone());
+
+            if !bound.contains(x) {
+                fv.push(x.clone());
+            }
+
+            fv
+        }
+        Expr::Abstraction(x, s) => {
+            let mut bound = bound.clone();
+            bound.extend(x.clone());
+
+            free_variables(s, bound)
+        }
+        Expr::Application(a, b) => {
+            let mut fv = free_variables(
+                a,
+                bound.clone()
+            );
+            fv.extend(free_variables(&b[0], bound));
+
+            fv
+        }
+    }
+}
+
+```
+
+===
+
+# Hoisting
+
+At this point, we're ready to hoist each statement to the top level. This essentially removes the tree structure from the lambda calculus and transforms it into something with sequence. This bit is important because it's when we make the jump from functional-land to procedural-land.
+
+We do a recursive walk down the tree, keeping track of a `Vec<>` of statements which we append do as we create indirection. After appending new let statement(s), we need to be sure to modify the source statement which refers to the new indirection.
+
+We use the same trick as earlier to ensure each F statement is uniquely named.
+
+===
+
+```
+(λa. λb. λc. a b c) a a a
+```
+-->
+```
+let F13 = b2;
+let F12 = a1;
+let F11 = c3;
+let F10 = (F12 (F13));
+let F9 = (F10 (F11));
+let F8 = (λa1, b2, c3. F9);
+let F7 = (λa1, b2, c3. F8);
+let F6 = a1;
+let F5 = (λa1, b2, c3. F7);
+let F4 = a1;
+let F3 = (F5 (F6));
+let F2 = a1;
+let F1 = (F3 (F4));
+let F0 = (F1 (F2));
+```
+
+===
+
+# Code Generation
+
+After considering compiling to C (like the GHC[?]), I settled on using Cranelift IR[?] as a backend. It allows me to ship a single, dependancy free binary which can compile for a range of architectures.
+
+This is as far as I've gotten. I do believe I'm most of the way through development but I'm going to work on something else for a bit and then come back to this.
+
+===

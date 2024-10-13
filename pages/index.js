@@ -101,26 +101,28 @@ function Details({ posts }) {
     }}
     key="details"
   >
-    <div className='lg:max-w-[30vw] space-y-4'>
-      <div className='text-4xl font-bold font-display'>
-        Lewis Carson
+    <div className='space-y-4'>
+      <div className='w-[30vw] text-base flex-col space-y-4'>
+        <div className='text-3xl font-bold font-display'>
+          Lewis Carson
+        </div>
+
+        <div>
+          Hello!
+        </div>
+        <div>
+          Second year Computer Science student at Durham University. I enjoy building projects about whatever interests me. Currently seeking internship for Summer 2025.<A href="https://github.com/lewis-carson">Github</A>
+        </div>
+
+        <div>
+          <span>Please email me regarding academic or professional enquires. </span>
+          <A href="mailto:lewis.carson@durham.ac.uk">Email</A>
+        </div>
       </div>
 
-      <div>
-        Hello!
-      </div>
-      <div>
-        I enjoy building small projects about whatever interests me. <A href="https://github.com/lewis-carson">Github</A>
-      </div>
+      <div className='font-semibold text-lg'>Projects</div>
 
-      <div>
-        <span>Please email me regarding academic or professional enquires. </span>
-        <A href="mailto:lewiscampbellcarson@gmail.com">Email</A>
-      </div>
-
-      <div className='font-semibold text-xl'>Projects</div>
-
-      <div>
+      <div className='text-base'>
         <BlogWidget posts={posts} />
       </div>
     </div>

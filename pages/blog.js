@@ -14,18 +14,23 @@ function A({ href, children }) {
 }
 
 export function BlogWidget({ posts }) {
-    return <><div className='space-y-2'>
+    return <><div className=''>
         {posts.map((post) => (
-            <div key={post.filePath} >
+            <div key={post.filePath}>
                 <Link
                     as={`/${post.filePath.replace(/\.mdx?$/, '')}`}
                     href={`/[slug]`}
                 >
-                    <span className="whitespace-nowrap text-blue-500 hover:text-blue-300 transition-all cursor-pointer">
-                        ({post.data.pretext}) {post.data.title} ↗
+                    <span className="pb-2 text-blue-600 hover:text-blue-400 transition-all cursor-pointer flex">
+                        {/*({post.data.pretext})  */}
+
+                        <div className='w-24 text-gray-500 hover:text-gray-500'>
+                            {post.data.subtitle} </div>
+                        <div className=''>
+                            {post.data.title} ↗
+                        </div>
                     </span>
                 </Link>
-                <div>{post.data.subtitle}</div>
             </div>
         ))}
     </div></>

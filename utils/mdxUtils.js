@@ -10,7 +10,7 @@ export const postFilePaths = [
     "whatgrad.mdx",
     "chess.mdx",
     "lambda.mdx",
-    "noteform.mdx"
+    //"noteform.mdx"
 ].reverse()/*fs
     .readdirSync(POSTS_PATH)
     // Only include md(x) files

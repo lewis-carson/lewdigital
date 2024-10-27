@@ -108,9 +108,6 @@ function Details({ posts }) {
         </div>
 
         <div>
-          Hello!
-        </div>
-        <div>
           Second year Computer Science student at Durham University. I enjoy building projects about whatever interests me. Currently seeking an internship for Summer 2025. <A href="https://github.com/lewis-carson">Github</A>
         </div>
 

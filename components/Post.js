@@ -42,7 +42,7 @@ const components = {
     strong: ({ children }) =>
         <span className='text-2xl font-display'>{children}</span>,
     pre: ({ children }) =>
-        <pre className='w-[100vw] lg:w-[50vw] lg:px-10 px-[5vw]'>{children}</pre>,
+        <pre className='w-[100vw] lg:w-[50vw] lg:px-10 px-[5vw] text-sm'>{children}</pre>,
     ol: ({ children }) =>
         <ol className='list-decimal'><Pad>{children}</Pad></ol>,
     li: ({ children }) =>
@@ -69,7 +69,7 @@ const components = {
         </Pad>,
     hr: ({ children }) =>
         <div className="w-full bg-[#f1f1f1] my-10"></div>,
-    m: ({ children }) => <MathJax inline={true} className='lg:mx-28 mx-[5vw] text-xl'>{"`" + children.toString() + "`"}</MathJax>,
+    m: ({ children }) => <MathJax inline={true} className='lg:mx-28 mx-[5vw]'>{"`" + children.toString() + "`"}</MathJax>,
 
 
 }

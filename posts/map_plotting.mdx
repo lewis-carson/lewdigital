@@ -1,0 +1,91 @@
+---
+pretext: Article
+title: Map Plotting
+subtitle: Jan 2019
+inline: false
+---
+
+For open day at my school in 2019, I created a web app which would allow you to type your primary school into a field (which would search for your school) and plot it onto a map to create a heatmap of school locations. 
+
+### Finding school data
+
+When finding the school data, I choose to use the Northern Irish census data to find schools and their postcodes. The site allowed me to download their census data in .csv format. Unfortunately, these school address weren't formatted in latitude and longitude, so I needed to find a way to convert my postcodes.
+
+### Postcode to latitude and longitude
+
+I used a node script to read my .csv file into an array, which I then iterated through, calling a map API for each element. 
+
+To use the API that I used, I had to provide each school's postcode, with which it returned latitudes and longitudes.
+
+Finally, I wrote each school name and it's latitude and longitude into JSON format, which my client side script could read.
+
+===
+
+```js
+fs.createReadStream("data.csv")
+    .pipe(parse({delimiter: ','}))
+    .on('data', function(csvrow) {
+        var postcode = csvrow[4]
+    	var name = csvrow[1]
+		//postcode API
+		request('http://api.postcodes.io/postcodes/' + postcode, function (error, response, body) {
+			body = JSON.parse(body)["result"]
+			var lat = body["latitude"]
+			var long = body["longitude"]
+			process.stdout.write(`,"${name}": [${lat}, ${long}, 0]`)
+		})
+		//if I find the end of the file, exit
+		if(csvrow[0] == "end"){
+    		return
+    	}
+    })
+```
+
+===
+
+### Searching through schools
+
+To search through the list of schools, I created a filter function which I called on search bar keydown. I then sliced the filter results to 7 objects, so that it wouldn't run off the screen.
+
+With the left over elements of my filter, I rendered these as my search results with a button beside it to indicate submitting a school. It's not the most elegant solution, but it works quickly.
+
+When the user clicks the submit version, it sends a get request to the server, which appends the new submision to its database and returns the updated results.
+
+===
+
+```js
+function search_func(element){
+	return element.toLowerCase().includes($("input").val().toLowerCase())
+}
+```
+
+```js
+for(var i in filtered) {
+	$("ul").append('<li id="' + filtered[i] + '">' + filtered[i] + '<button onclick="select(this)"><i class="fa fa-arrow-right"></i></button></li>');
+}
+```
+
+===
+
+### Plotting the latitude and longitude
+
+After the client script had been sent the data, it needs to plot it on a map. This is the map I chose:
+
+![Alt text](img/map_blank.svg)
+
+I went on to google maps and extimated the top left of the map's latitude and longitude and did the same for the bottom right. I needed a way to turn all of my latutude and longitudes into right and left values so I could correctly position each spawned pin on top of the map.
+
+This worked and accurately displayed each of my specified schools on the map accurately and quickly.
+
+=== 
+
+```js
+var left = ((final[i].long - map_long_left)/(map_long_right - map_long_left))*100
+$(jquery_id).css("left", left*3 + "px")
+var top = ((final[i].lat - map_lat_top)/(map_lat_bottom - map_lat_top))*100
+$(jquery_id).css("top", top*3 - 20 + "px")
+```
+
+===
+
+===

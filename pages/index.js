@@ -117,7 +117,7 @@ function Details({ posts }) {
         </div>
       </div>
 
-      <div className='font-semibold text-lg'>Projects</div>
+      <div className='font-semibold text-lg'>Notes</div>
 
       <div className='text-base'>
         <BlogWidget posts={posts} />

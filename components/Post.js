@@ -55,7 +55,7 @@ const components = {
         <ul className='list-[square]'><Pad>{children}</Pad></ul>,
     Head,
     img: ({ src, alt }) =>
-        <img src={src} alt={alt} className='px-10 pt-5' />,
+        <img src={src} alt={alt} className='pt-5' />,
     blockquote: ({ children }) =>
         <div className='py-10 italic 
         bg-gradient-to-r from-[offwhite] via-transparent to-transparent border-y-4 border-dashed'>

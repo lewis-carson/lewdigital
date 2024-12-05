@@ -1,0 +1,94 @@
+---
+pretext: Data Analysis
+title: Exploring rugby data
+subtitle: Nov 2024
+inline: false
+---
+
+What factors lead to more tries? More runs? Less cards? Are some positions more important than others?
+
+Let's find out. We'll use the [Rugbydata](https://github.com/seanyboi/rugbydata) dataset as it's rich in extremely granular data - this comes at the cost of being a bit messy, but we can clean it up.
+
+Rugbydata comes in the Parquet format - a large folder where each entry represents a game. Let's write a short script to put the information we want into a CSV which'll be faster to process and easier to work with.
+
+===
+
+```python
+folder = 'rugbydata/data/team/'
+
+files = os.listdir(folder)
+
+cols_df = pd.read_parquet(folder + "1/20230204.parquet")
+
+columns = cols_df.columns
+
+df = pd.DataFrame(columns=columns)
+
+for file in files:
+    inner_files = os.listdir(folder + file)
+
+    for inner_file in inner_files:
+        if inner_file.endswith('.parquet'):
+            single_df = pd.read_parquet(folder + file + '/' + inner_file)
+            
+            df = pd.concat([df, single_df.head(1)], ignore_index=True)
+
+df.to_csv('data/teams.csv', index=False)
+
+```
+
+===
+
+Here's the first few rows that get produced:
+
+As you can see, there are a LOT of zero values. This is because smaller test matches don't have such granular data recorded, so it's logged as zero. Even after ignoring these smaller games, we have a lot of good data that we can derive some insight from.
+
+===
+
+```
+   team         game_date      team_id  ... turnovers_conceded  yellow_cards  meters_run
+0  Luxembourg   20240524       61       ...                0.0           0.0         0.0
+1  Luxembourg   20231013       61       ...                0.0           0.0         NaN
+2  Kazakhstan   20240503       95       ...                0.0           0.0         0.0
+3  Kazakhstan   20230505       95       ...                0.0           0.0         NaN
+4  Kazakhstan   20230502       95       ...                0.0           0.0         NaN
+```
+
+===
+
+Let's construct some synthetic columns such as `points` and `lineouts_win_rate` to make our analysis clearer - stuff which isn't directly in the dataset. We also create some columns such as `avg_metres_per_run` - not usually a statistic that is used during analysis, but it could be interesting to see if it correlates with wins.
+
+Let's normalise each column and then work out the correlation between each column and the result of the game.
+
+===
+
+```python
+teams_norm = (teams - teams.mean()) / teams.std()
+covariance_with_points = teams_norm.cov()['points']
+
+covariance_with_points = covariance_with_points.sort_values(ascending=False)
+
+teams = teams[covariance_with_points.index]
+```
+
+===
+
+Here are the top 5 columns that correlate with points:
+
+- clean_breaks (0.541129)
+- avg_metres_per_run (0.523404)
+- meters_run (0.370375)
+- defenders_beaten (0.335925)
+- offload (0.324634)
+
+So clearly, running more and making clean breaks while attacking leads to scoring more points. This is a pretty intuitive result, and it's good to see that the data backs it up.
+
+Let's plot the relationship between some of these columns and the result of the game.
+
+===
+
+![plot](img/offloadsvtries.png)
+
+![plot](img/metresvtries.png)
+
+![plot](img/strongest.png)

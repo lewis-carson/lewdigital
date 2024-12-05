@@ -32,7 +32,7 @@ function Header3({ children }) {
     </div>
 }
 
-const Pad = ({ children }) => <div className='lg:mx-28 mx-[5vw]'>{children}</div>
+const Pad = ({ children }) => <div className='lg:mx-20 mx-[3vw] text-base'>{children}</div>
 
 //const Graphviz = dynamic(() => import('graphviz-react'), { ssr: false });
 
@@ -143,14 +143,14 @@ function FigurePair({ figure, annotation, hasFadeMargin = true, inline = false }
 }
 
 function Title({ frontMatter, timeToRead }) {
-    return <div className='lg:mx-28 m-[5vw]'>
-        <div className='font-display text-5xl xl:text-7xl'>
-            {frontMatter.title}
-        </div>
-        <br />
-        <div className='font-display  text-3xl xl:text-5xl'>
-            {frontMatter.subtitle}
-
+    return <div className='lg:mx-20 m-[3vw]'>
+        <div className="xl:space-y-7">
+            <div className='font-display text-4xl xl:text-6xl'>
+                {frontMatter.title}
+            </div>
+            <div className='font-display text-2xl xl:text-4xl'>
+                {frontMatter.subtitle}
+            </div>
         </div>
 
         <div className="h-5 lg:h-10"></div>
@@ -209,7 +209,7 @@ export default function Post({ s, frontMatter, timeToRead }) {
         <FigurePair
             figure={<></>}
             annotation={
-                <div className='lg:pt-32'>
+                <div className='lg:pt-28'>
                     <Pad>
                         <Return />
                     </Pad>

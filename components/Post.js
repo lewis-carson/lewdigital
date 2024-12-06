@@ -42,11 +42,13 @@ const components = {
     strong: ({ children }) =>
         <span className='text-2xl font-display'>{children}</span>,
     pre: ({ children }) =>
-        <pre className='w-[100vw] lg:w-[50vw] lg:px-10 px-[5vw] text-sm'>{children}</pre>,
+        <pre className='w-[100vw] xl:w-[60vw] lg:px-10 px-[5vw] text-sm'>{children}</pre>,
     ol: ({ children }) =>
         <ol className='list-decimal' text-base><Pad>{children}</Pad></ol>,
     li: ({ children }) =>
         <li className='my-2 ml-5 text-base'>{children}</li>,
+    code: ({ children }) =>
+        <code className='rounded-lg border hljs language-r p-5'>{children}</code>,
     h1: ({ children }) => <Header>{children}</Header>,
     h2: ({ children }) => <Header2>{children}</Header2>,
     h3: ({ children }) => <Header3>{children}</Header3>,
@@ -78,28 +80,28 @@ const components = {
 
 import { motion } from 'framer-motion';
 
-const AnnotationColumn = ({ children, isFigure, inline }) =>
+const AnnotationColumn = ({ children, inline }) =>
     <div
         className="flex lg:w-[40vw] lg:pb-20"
         style={{
-            backgroundColor: (isFigure ? "#f1f1f1" : ""),
-            lineHeight: (isFigure ? "2.3rem" : "1.9rem"),
-            fontSize: (isFigure ? "1.1rem" : "1.1rem"),
+            backgroundColor: "",
+            lineHeight: "1.9rem",
+            fontSize: "1.1rem",
         }}>
         <div className='py-10'>
             {children}
         </div>
     </div >
 
-const FigureColumn = ({ children, isFigure, inline }) =>
+const FigureColumn = ({ children, inline }) =>
     <div
         className="flex lg:w-[60vw] lg:pb-20"
         style={{
-            backgroundColor: (isFigure ? "#f1f1f1" : ""),
-            lineHeight: (isFigure ? "2.3rem" : "1.9rem"),
-            fontSize: (isFigure ? "1.1rem" : "1.1rem"),
+            backgroundColor: "#f9f9f9",
+            lineHeight: "2.3rem",
+            fontSize: "1.1rem",
         }}>
-        <div className='py-10'>
+        <div className='py-10 overflow-hidden'>
             {children}
         </div>
     </div >
@@ -145,7 +147,7 @@ function FigurePair({ figure, annotation, hasFadeMargin = true, inline = false }
             </Sticky>
         </AnnotationColumn>
 
-        <FigureColumn isFigure>
+        <FigureColumn>
             <Sticky>
                 <FadeIn margin={hasFadeMargin ? "0% 0% -20% 0%" : "0%"}>
                     {figure}

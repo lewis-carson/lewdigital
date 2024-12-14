@@ -8,6 +8,7 @@ export const POSTS_PATH = path.join(process.cwd(), 'posts')
 export const postFilePaths = [
    // "map_plotting.mdx",
    // "dash.mdx",
+    "picocfd.mdx",
     "willow.mdx",
     "whatgrad.mdx",
     "chess.mdx",

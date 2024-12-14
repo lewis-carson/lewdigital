@@ -1,0 +1,45 @@
+---
+pretext: Project
+title: Declarative Dashboards
+subtitle: Dec 2024
+inline: false
+---
+
+Let's say you're building a dashboard that you want to update in real-time. You could use a traditional approach, where you have a backend that fetches data from a database, and a frontend that fetches data from the backend. This is a common pattern, but it has some drawbacks:
+- It's difficult to reason about the state of the dashboard
+- It's difficult to reason about the performance of the dashboard
+- It's difficult to reason about the correctness of the dashboard
+
+What if, instead of using a traditional approach, you could use a declarative approach? In a declarative approach, you specify the state of the dashboard as a function of the data, and the dashboard updates itself automatically when the data changes. 
+
+Even further, we can utilise some unix patterns like folder structures and `tail -f` to build an interface which is immediately intuitive to anyone who's ever used a command line.
+
+In concrete terms: what if my file structure looked like this?
+
+dashboard
+├── datastream1.txt
+├── datastream2.txt
+└── datastream3.txt
+
+Where each file is being continuously appended to by some external process(es).
+
+We can then define a dashboard as a layout of files, which are updated in real-time. Note that we do not specify how the files are updated, only that they are part of the same dashboard. External processes handle the data that's being written to the files.
+
+We can even extend this to only show on the dashboard active files, or files that have been updated in the last few minutes. This is a powerful way to build dashboards that are always up-to-date, and that are easy to reason about.
+
+Even better, we can specify in the file name the context window (i.e. the last n minutes) that we want to display within each chart:
+
+dashboard
+├── datastream1_10s.txt
+├── datastream2_5m.txt
+└── datastream3_10m.txt
+
+Furthermore, we could group multiple data streams into a single chart by grouping them into a folder:
+
+dashboard
+├── datastream1.txt
+├── datastream2.txt
+├── datastream3.txt
+└── multiline1
+    ├── datastream4.txt
+    └── datastream5.txt

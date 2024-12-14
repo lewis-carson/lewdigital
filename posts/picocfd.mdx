@@ -1,0 +1,94 @@
+---
+pretext: Project
+title: Building picoCFD: A Tiny Fluid Dynamics Simulator in Rust
+subtitle: Dec 2024
+inline: false
+---
+
+## What is picoCFD?
+
+picoCFD is an unnecessarily minimal implementation of the incompressible Navier-Stokes equations. The entire simulation, including visualization, fits in a single file. It's not fast, it's not feature-rich, but it's educational!
+
+## Core Features
+
+- Real-time fluid simulation ✅
+- Hardware accelerated rendering ✅
+- Lid-driven cavity demonstration ✅
+- Production ready? ❌
+- Optimized? ❌
+- But it's tiny! 🤏
+
+## The Physics Behind It
+
+The simulation solves the incompressible Navier-Stokes equations:
+
+1. Conservation of mass: <m>∇·u = 0</m>
+2. Conservation of momentum: <m>∂u/∂t + (u·∇)u = -∇p + ν∇²u</m>
+
+We use a grid-based approach with:
+- Semi-Lagrangian advection for stability
+- Pressure projection for incompressibility
+- Simple explicit time stepping
+
+## Implementation Highlights
+
+```rust
+// Core simulation parameters
+const DT: f32 = 0.016;    // 60 FPS time step
+const VISC: f32 = 0.001;  // Fluid viscosity
+const NITER: usize = 8;   // Pressure solver iterations
+```
+
+The simulation cycle follows these steps:
+1. Apply external forces
+2. Diffuse velocities
+3. Project for incompressibility
+4. Advect velocities
+5. Project again
+
+## Visualization
+
+We use a simple velocity-to-color mapping:
+- Red → High velocity
+- Blue → Low velocity
+
+This creates an intuitive visualization of the flow patterns.
+
+## Why Rust?
+
+Rust provides:
+- Zero-cost abstractions
+- Memory safety
+- Easy integration with graphics APIs
+- Great performance without optimization
+
+## Running The Simulation
+
+```bash
+git clone https://github.com/yourusername/picoCFD
+cd picoCFD
+cargo run --release
+```
+
+Watch as the fluid swirls and eddies form in real-time!
+
+## Limitations
+
+picoCFD is intentionally minimal:
+- No turbulence modeling
+- No boundary layer resolution
+- Single-phase flow only
+- Fixed grid resolution
+
+But that's the point! It's a learning tool, not a research platform.
+
+## Conclusion
+
+picoCFD shows that fluid dynamics simulation doesn't have to be complex. While it's not suitable for real engineering work, it's perfect for learning the basics of CFD implementation.
+
+The complete source code is available on [GitHub](https://github.com/yourusername/picoCFD).
+
+## Further Reading
+
+- [Real-Time Fluid Dynamics for Games](https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf) by Jos Stam
+- [Fluid Simulation for Computer Graphics](https://www.cs.ubc.ca/~rbridson/fluidsimulation/) by Robert Bridson

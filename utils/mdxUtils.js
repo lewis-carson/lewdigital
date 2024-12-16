@@ -8,13 +8,13 @@ export const POSTS_PATH = path.join(process.cwd(), 'posts')
 export const postFilePaths = [
    // "map_plotting.mdx",
    // "dash.mdx",
-    "picocfd.mdx",
     "willow.mdx",
     "whatgrad.mdx",
     "chess.mdx",
     "lambda.mdx",
     "buttondown.mdx",
-    "rugby.mdx"
+    "rugby.mdx",
+    "picocfd.mdx"
 ].reverse()/*fs
     .readdirSync(POSTS_PATH)
     // Only include md(x) files

@@ -111,7 +111,7 @@ function FadeIn({ children, margin }) {
         <motion.div
             className='hidden lg:block space-y-5'
             initial={{
-                opacity: 0
+                opacity: 0.1
             }}
             whileInView={{
                 opacity: 1
@@ -141,9 +141,9 @@ function FigurePair({ figure, annotation, hasFadeMargin = true, inline = false }
     return <div className="w-screen lg:min-h-[60vh] lg:flex">
         <AnnotationColumn>
             <Sticky>
-                <div className='lg:block space-y-5'>
+                <FadeIn margin={hasFadeMargin ? "0% 0% -20% 0%" : "0%"}>
                     {annotation}
-                </div>
+                </FadeIn>
             </Sticky>
         </AnnotationColumn>
 

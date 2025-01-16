@@ -13,7 +13,7 @@ export const postFilePaths = [
     "chess.mdx",
     "lambda.mdx",
     "buttondown.mdx",
-    "rugby.mdx",
+    //"rugby.mdx",
     "picocfd.mdx"
 ].reverse()/*fs
     .readdirSync(POSTS_PATH)

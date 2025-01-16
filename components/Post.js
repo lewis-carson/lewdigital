@@ -54,7 +54,7 @@ const components = {
     h3: ({ children }) => <Header3>{children}</Header3>,
     p: ({ children }) => <Pad><div className='text-base'>{children}</div></Pad>,
     ul: ({ children }) =>
-        <ul className='list-[square]'><Pad>{children}</Pad></ul>,
+        <Pad><ul className='list-[square]'>{children}</ul></Pad>,
     Head,
     img: ({ src, alt }) =>
         <img src={src} alt={alt} className='pt-5' />,

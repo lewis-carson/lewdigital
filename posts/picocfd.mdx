@@ -5,115 +5,79 @@ subtitle: Dec 2024
 inline: true
 ---
 
-## What is picoCFD?
-
-picoCFD is an unnecessarily minimal implementation of the incompressible Navier-Stokes equations. The entire simulation, including visualization, fits in a single file. It's not fast, it's not feature-rich, but it's educational!
+# picoCFD
 
 ---
 
-## Core Features
-
-- Real-time fluid simulation ✅
-- Hardware accelerated rendering ✅
-- Lid-driven cavity demonstration ✅
-- Production ready? ❌
-- Optimized? ❌
-- But it's tiny! 🤏
+A lightweight Computational Fluid Dynamics simulation framework written in Rust.
 
 ---
 
-===
-
-===
-
-## The Physics Behind It
-
-The simulation solves the incompressible Navier-Stokes equations:
-
-1. Conservation of mass:
-2. Conservation of momentum:
-
-We use a grid-based approach with:
-- Semi-Lagrangian advection for stability
-- Pressure projection for incompressibility
-- Simple explicit time stepping
-
-===
-<m>∇·u = 0</m>
-<br/><br/>
-
-<m>∂u/∂t + (u·∇)u = -∇p + ν∇²u</m>
-===
-
-## Implementation Highlights
-
-The simulation cycle follows these steps:
-1. Apply external forces
-2. Diffuse velocities
-3. Project for incompressibility
-4. Advect velocities
-5. Project again
-
-===
-```rust
-// Core simulation parameters
-const DT: f32 = 0.016;    // 60 FPS time step
-const VISC: f32 = 0.001;  // Fluid viscosity
-const NITER: usize = 8;   // Pressure solver iterations
-```
-===
-
-## Visualization
-
-We use a simple velocity-to-color mapping:
-- Red → High velocity
-- Blue → Low velocity
-
-This creates an intuitive visualization of the flow patterns.
+## Description
 
 ---
 
-## Why Rust?
+picoCFD is a minimal (I mean, very minimal) implementation of the Navier-Stokes equations for incompressible fluid flow. The simulation uses a grid-based approach with finite difference methods for solving fluid dynamics in real-time.
 
-Rust provides:
-- Zero-cost abstractions
-- Memory safety
-- Easy integration with graphics APIs
-- Great performance without optimization
+The project is intended as a learning exercise for understanding the basics of fluid dynamics and numerical methods. It is not intended for production use or serious research applications. As such, the entire project is implemented in a single ~360 line file with minimal dependencies.
 
 ---
 
-===
+## Features
 
-===
+---
 
-## Running The Simulation
+- Real-time fluid simulation using Navier-Stokes equations
+- Hardware-accelerated rendering with the `pixels` crate
+- Efficient grid-based computation
+- Lid-driven cavity flow demonstration
+- Customizable simulation parameters:
+    - Viscosity
+    - Grid resolution
+    - Time step
+    - Flow velocity
 
-Watch as the fluid swirls and eddies form in real-time!
+---
 
-===
+## Example Usage
 
-```bash
-git clone https://github.com/lewis-carson/picoCFD
-cd picoCFD
-cargo run --release
+---
+
+Run the simulation:
+
+
+---
+
+```sh
+   cargo run --release
 ```
 
-===
+---
 
-## Limitations
+The simulation demonstrates a classic lid-driven cavity flow problem:
+- Top wall moves at constant velocity
+- Other walls are stationary
+- Fluid motion is driven by viscous drag
+- Visualization uses color mapping:
+  - Red → High velocity
+  - Blue → Low velocity
 
-picoCFD is intentionally minimal:
-- No turbulence modeling
-- No boundary layer resolution
-- Single-phase flow only
-- Fixed grid resolution
+---
 
-But that's the point! It's a learning tool, not a research platform.
+## Implementation Details
+
+---
+
+Core components:
+- Grid-based velocity field (u, v components)
+- Pressure field computation
+- Semi-Lagrangian advection
 
 ---
 
 ## Conclusion
+
+---
 
 picoCFD shows that fluid dynamics simulation doesn't have to be complex. While it's not suitable for real engineering work, it's perfect for learning the basics of CFD implementation.
 
@@ -122,6 +86,8 @@ The complete source code is available on [GitHub](https://github.com/yourusernam
 ---
 
 ## Further Reading
+
+---
 
 - [Real-Time Fluid Dynamics for Games](https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf) by Jos Stam
 - [Fluid Simulation for Computer Graphics](https://www.cs.ubc.ca/~rbridson/fluidsimulation/) by Robert Bridson

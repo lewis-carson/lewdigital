@@ -1,0 +1,74 @@
+---
+pretext: Project
+title: Porting PFP from Haskell to OCaml
+subtitle: Jan 2025
+inline: false
+---
+
+I wanted to port [this library](https://web.engr.oregonstate.edu/~erwig/papers/PFP_JFP06.pdf) from Haskell to OCaml. This was ill-advised, because I didn't know Haskell OR OCaml. I thought this would be a good opportunity to get comfortable with both. Also, it's a super interesting library.
+
+Here's a few notes I made along the way.
+
+===
+
+![](http://caml.inria.fr/pub/docs/oreilly-book/html/logocaml.gif)
+
+===
+
+## Initialising an OCaml lIbrary
+
+This is weirdly, really confusing. While OCaml is pretty mature, it doesn't have the same community output that a much larger language like Rust has. Plus, Rust has the benefit of centralised package management and compiler tooling (Cargo). I can't work out what the standard is for structuring an OCaml project. `dune`, the main build tool, has a number of examples in its `getting started` guide which all do the same thing.
+
+Eventually I got things working with the following folder structure:
+
+===
+
+```
+prob
+├── bin
+│   ├── dune
+│   └── main.ml
+├── dune-project
+├── lib
+│   ├── prob.ml
+│   └── dune
+├── prob.opam
+└── test
+    ├── dune
+    └── test_prob.ml
+```
+
+===
+
+## Trouble with Haskell versioning
+
+The original PFP library uses Haskell 6.4, which ghcup doesn't even support on my computer. Its most important file is `Probability.hs`, which is a ~700 line file that defines a number of functions for working with probability distributions. I'm going to start by porting this file to OCaml.
+
+Haskell's syntax is really, really dense. Look at this block from the original Probability.hs file. Oviously this is a cherry-picked example, but it's clear how quickly you can get lost in Haskell.
+
+===
+
+```
+
+rAbove p rd = do D d <- rd
+                 let (d1,d2) = span (\(_,q)->q>=p) (sortP (norm' d))
+                 return (D (map (\(x,q)->(Case x,q)) d1++[(Other,sumP d2)]))
+
+```
+
+===
+
+## OCaml's lack of type classes
+
+Ocaml doesn't have type classes, which makes it feel like a less powerful language than Haskell. Type classes are a way of defining a set of functions that can be used with any type that implements the class.
+
+The reason for this is described pretty well in "Modular Type Classes" by Derek Dreyer, Robert Harper, and Manuel M. T. Chakravarty. In Proceedings of The 34th Annual ACM SIGPLAN - SIGACT Symposium on Principles of Programming Languages, ACM Press, 2007. From the abstract:
+
+
+===
+
+> ML modules and Haskell type classes have proven to be highly effective tools for program structuring. Modules emphasize explicit configuration of program components and the use of data abstraction. Type classes emphasize implicit program construction and ad hoc polymorphism. In this paper, we show how the implicitly-typed style of type class programming may be supported within the framework of an explicitly-typed module language by viewing type classes as a particular mode of use of modules. <br/> <br/> This view offers a harmonious integration of modules and type classes, where type class features, such as class hierarchies and associated types, arise naturally as uses of existing module-language constructs, such as module hierarchies and type components. In addition, programmers have explicit control over which type class instances are available for use by type inference in a given scope. We formalize our approach as a Harper-Stone-style elaboration relation, and provide a sound type inference algorithm as a guide to implementation.
+
+===
+
+===

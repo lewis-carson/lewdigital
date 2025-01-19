@@ -15,7 +15,7 @@ export const postFilePaths = [
     "buttondown.mdx",
     //"rugby.mdx",
     "picocfd.mdx",
-    "prob.mdx"
+    "pfpcaml.mdx"
 ].reverse()/*fs
     .readdirSync(POSTS_PATH)
     // Only include md(x) files

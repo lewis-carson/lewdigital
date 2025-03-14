@@ -108,7 +108,7 @@ function Details({ posts }) {
         </div>
 
         <div>
-          Second year Computer Science student at Durham University. I enjoy building projects about whatever interests me. Incoming quant dev at <A href="https://queueco.com/">Queueco</A>. <A href="https://github.com/lewis-carson">Github</A>
+          Second year Computer Science student at Durham University. I enjoy building projects about whatever interests me. Incoming quant dev intern at <A href="https://queueco.com/">Queueco</A>. <A href="https://github.com/lewis-carson">Github</A>
         </div>
 
         <div>

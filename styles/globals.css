@@ -31,3 +31,33 @@ td {
     padding: 1rem;
     padding-bottom: 2rem;
 }
+
+/* Safari-specific code block fixes */
+code, pre {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "calt" 1, "ss01" 1;
+  font-variant-ligatures: normal;
+}
+
+/* This helps Safari render monospace fonts better */
+pre code, code pre, pre, code {
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: none;
+}
+
+/* Ensure Safari preserves whitespace properly in code blocks */
+pre {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: auto;
+}
+
+/* Better text contrast for Safari */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    code, pre {
+      text-shadow: 0 0 0 rgba(0,0,0,0.85);
+    }
+  }
+}

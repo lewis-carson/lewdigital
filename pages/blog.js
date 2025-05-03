@@ -14,26 +14,41 @@ function A({ href, children }) {
 }
 
 export function BlogWidget({ posts }) {
-    return <><div className=''>
-        {posts.map((post) => (
-            <div key={post.filePath}>
-                <Link
-                    as={`/${post.filePath.replace(/\.mdx?$/, '')}`}
-                    href={`/[slug]`}
-                >
-                    <span className="pb-2 text-blue-600 hover:text-blue-400 transition-all cursor-pointer flex">
-                        {/*({post.data.pretext})  */}
-
-                        <div className='w-24 text-gray-500 hover:text-gray-500'>
-                            {post.data.subtitle} </div>
-                        <div className=''>
-                            {post.data.title} ↗
-                        </div>
-                    </span>
-                </Link>
-            </div>
-        ))}
-    </div></>
+    return (
+        <table className="min-w-full border border-gray-200 text-left">
+            <thead>
+                <tr className="bg-gray-50">
+                    <th className="px-2 py-1 border-b">Date</th>
+                    <th className="px-2 py-1 border-b">Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {posts.map((post) => (
+                    <Link
+                        as={`/${post.filePath.replace(/\.mdx?$/, '')}`}
+                        href={`/[slug]`}
+                        key={post.filePath}
+                        legacyBehavior
+                    >
+                        <tr
+                            className="hover:bg-gray-50 hover:cursor-pointer"
+                            tabIndex={0}
+                            style={{ outline: 'none' }}
+                        >
+                            <td className="px-2 py-1 border-b text-gray-500">
+                                {post.data.subtitle || ''}
+                            </td>
+                            <td className="px-2 py-1 border-b">
+                                <span className="text-blue-600 hover:text-blue-400 cursor-pointer">
+                                    {post.data.title} ↗
+                                </span>
+                            </td>
+                        </tr>
+                    </Link>
+                ))}
+            </tbody>
+        </table>
+    );
 }
 
 export default function Blog({ posts }) {

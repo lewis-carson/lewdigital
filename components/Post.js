@@ -37,6 +37,26 @@ const Header3 = ({ children }) => (
   </div>
 );
 
+// Modify the components map to make MathJax render only on client-side
+const SafeMathJax = ({ children }) => {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Only render MathJax on client-side to avoid hydration issues
+  if (!mounted) {
+    return <span className="lg:mx-28 mx-[5vw]">{children}</span>;
+  }
+  
+  return (
+    <MathJax inline={true} className="lg:mx-28 mx-[5vw]">
+      {"`" + children.toString() + "`"}
+    </MathJax>
+  );
+};
+
 // MDX Components Map
 const components = {
   a: A,
@@ -63,7 +83,7 @@ const components = {
     </Pad>
   ),
   hr: () => <div className="w-full bg-[#f1f1f1] my-10"></div>,
-  m: ({ children }) => <MathJax inline={true} className="lg:mx-28 mx-[5vw]">{"`" + children.toString() + "`"}</MathJax>,
+  m: ({ children }) => <SafeMathJax>{children}</SafeMathJax>,
 };
 
 // Layout Columns
@@ -86,20 +106,20 @@ const FigureColumn = ({ children }) => (
 );
 
 // Animation/Sticky
-const FadeIn = ({ children, margin }) => (
-  <div>
-    <motion.div
-      className="hidden lg:block space-y-5"
-      initial={{ opacity: 0.1 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      viewport={{ margin }}
-    >
-      {children}
-    </motion.div>
-    <div className="lg:hidden space-y-5">{children}</div>
-  </div>
-);
+// A simpler FadeIn component that doesn't use any props or effects
+const FadeIn = ({ children, margin }) => {
+  // margin prop is received but intentionally not used
+  return (
+    <>
+      <div className="hidden lg:block space-y-5">
+        {children}
+      </div>
+      <div className="lg:hidden space-y-5">
+        {children}
+      </div>
+    </>
+  );
+};
 
 const Sticky = ({ children }) => (
   <div className="lg:sticky top-16">{children}</div>

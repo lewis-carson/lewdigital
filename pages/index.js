@@ -1,5 +1,3 @@
-
-
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -83,6 +81,46 @@ function A({ href, children }) {
 }
 
 function Details({ posts }) {
+  // List of websites you love
+  const websites = [
+    { name: "Neil Panchal", url: "https://neil.computer", desc: "Personal website of Neil Panchal" },
+    { name: "McMaster-Carr", url: "https://www.mcmaster.com/", desc: "A masterclass in UX design" },
+    { name: "Recipe for Training Neural Networks", url: "http://karpathy.github.io/2019/04/25/recipe/", desc: "So, so practical" },
+    { name: "DiskPrices", url: "https://diskprices.com/", desc: "Amazing information density" },
+    // ...add more if you like...
+  ];
+
+  function WebsitesTable({ sites }) {
+    return (
+      <table className="border border-gray-200 text-left text-sm w-full">
+        <thead>
+          <tr className="bg-gray-50">
+            <th className="px-2 py-1 border-b w-1/3">Name</th>
+            <th className="px-2 py-1 border-b w-2/3">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sites.map(site => (
+            <tr
+              key={site.url}
+              className="hover:bg-gray-50 hover:cursor-pointer"
+              onClick={() => window.open(site.url, "_blank")}
+              tabIndex={0}
+              style={{ outline: 'none' }}
+            >
+              <td className="px-2 py-1 border-b text-blue-600 hover:text-blue-400 w-1/3">
+                <a href={site.url} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+                  {site.name} ↗
+                </a>
+              </td>
+              <td className="px-2 py-1 border-b text-gray-500 w-2/3">{site.desc}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   return <motion.div
     className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
 
@@ -102,25 +140,37 @@ function Details({ posts }) {
     key="details"
   >
     <div className='space-y-4'>
-      <div className='w-[30vw] text-base flex-col space-y-4'>
-        <div className='text-3xl font-bold font-display'>
-          Lewis Carson
+      <div className='w-full max-w-2xl md:w-[40vw] text-sm pb-4 flex flex-col md:flex-row items-stretch h-full'>
+        <div className="flex-shrink-0 flex items-center justify-center md:items-stretch pr-0 md:pr-3 h-40 md:h-full w-full md:w-auto mb-4 md:mb-0">
+          <img
+            src="/img/headshot.jpeg"
+            alt="Lewis Carson headshot"
+            className="h-40 w-40 md:h-full md:w-36 object-cover mx-auto md:mx-0"
+            style={{}}
+          />
         </div>
-
-        <div>
-          Second year Computer Science student at Durham University. I enjoy building projects about whatever interests me. Incoming quant dev intern at <A href="https://queueco.com/">Queueco</A> 
-        </div>
-
-        <div>
-          <span>Please email me regarding academic or professional enquires. </span>
-          <A href="mailto:lewis.carson@durham.ac.uk">Email</A>
+        <div className="flex-1 space-y-4 md:ml-6 flex flex-col justify-start h-full">
+          <div className='text-3xl font-display'>
+            Lewis Carson
+          </div>
+          <div>
+            Second year Computer Science student at Durham University. Interested in game theory, functional programming, and mathematical modelling. Incoming quant dev intern at <A href="https://queueco.com/">Queueco</A> 
+          </div>
+          <div>
+            Please <A href="mailto:lewis.carson@durham.ac.uk">Email</A> me regarding academic or professional enquires.
+            You can also find me on <A href="https://www.linkedin.com/in/lewis-carson-3a4580212/">LinkedIn</A> or <A href="http://github.com/lewis-carson">GitHub</A>
+          </div>
         </div>
       </div>
-
-      <div className='font-semibold text-lg'>Notes</div>
-
-      <div className='text-base'>
-        <BlogWidget posts={posts} />
+      <div className="flex flex-col md:flex-row gap-8 w-full md:w-[66vw]">
+        <div className="text-sm w-full md:w-1/2 mb-4 md:mb-0">
+          <div className="mb-2">Notes</div>
+          <BlogWidget posts={posts} />
+        </div>
+        <div className="w-full md:w-1/2 text-sm">
+          <div className="mb-2">Websites I Love</div>
+          <WebsitesTable sites={websites} />
+        </div>
       </div>
     </div>
   </motion.div >

@@ -174,8 +174,8 @@ const InlineOrMobileLayout = ({ s, frontMatter, timeToRead }) => (
     <div className="border-b">
       <Title frontMatter={frontMatter} timeToRead={timeToRead} />
     </div>
-    <div className="pb-32">
-      <div className={`mx-auto my-8 space-y-16 px-4 sm:px-6 md:px-8 ${frontMatter.inline ? 'max-w-4xl' : 'max-w-2xl'}`}>
+    <div className="pb-20 pt-10"> {/* reduced from pb-32 */}
+      <div className={`mx-auto space-y-10 px-4 sm:px-6 md:px-8 ${frontMatter.inline ? 'max-w-4xl' : 'max-w-2xl'}`}> {/* my-8 -> my-4, space-y-16 -> space-y-10 */}
         {s.map((source, i) => [
           <div key={`annotation-${i}`}>
             {source.annotation && <MDXRemote {...source.annotation} components={components} />}
@@ -185,9 +185,11 @@ const InlineOrMobileLayout = ({ s, frontMatter, timeToRead }) => (
           </div>
         ])}
       </div>
-      <Pad>
-        <Return />
-      </Pad>
+      <div className='pt-12'>
+        <Pad>
+          <Return />
+        </Pad>
+      </div>
     </div>
   </>
 );

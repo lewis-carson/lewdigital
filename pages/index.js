@@ -140,7 +140,7 @@ function Details({ posts }) {
     key="details"
   >
     <div className='space-y-4'>
-      <div className='w-full max-w-2xl md:w-[40vw] text-sm pb-4 flex flex-col md:flex-row items-stretch h-full'>
+      <div className='w-full max-w-2xl text-sm pb-4 flex flex-col md:flex-row items-stretch h-full'>
         <div className="flex-shrink-0 flex items-center justify-center md:items-stretch pr-0 md:pr-3 h-40 md:h-full w-full md:w-auto mb-4 md:mb-0">
           <img
             src="/img/headshot.jpeg"

@@ -2,11 +2,6 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
 import animate from "../utils/animate";
-import { BlogWidget } from './blog';
-import { postFilePaths, POSTS_PATH } from '../utils/mdxUtils'
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
 
 const delay = 0.3
 const fade_out_duration = 0.2
@@ -80,47 +75,7 @@ function A({ href, children }) {
   </Link>
 }
 
-function Details({ posts }) {
-  // List of websites you love
-  const websites = [
-    { name: "Neil Panchal", url: "https://neil.computer", desc: "Personal website of Neil Panchal" },
-    { name: "McMaster-Carr", url: "https://www.mcmaster.com/", desc: "A masterclass in UX design" },
-    { name: "Recipe for Training Neural Networks", url: "http://karpathy.github.io/2019/04/25/recipe/", desc: "So, so practical" },
-    { name: "DiskPrices", url: "https://diskprices.com/", desc: "Amazing information density" },
-    // ...add more if you like...
-  ];
-
-  function WebsitesTable({ sites }) {
-    return (
-      <table className="border border-gray-200 text-left text-sm w-full">
-        <thead>
-          <tr className="bg-gray-50">
-            <th className="px-2 py-1 border-b w-1/3">Name</th>
-            <th className="px-2 py-1 border-b w-2/3">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sites.map(site => (
-            <tr
-              key={site.url}
-              className="hover:bg-gray-50 hover:cursor-pointer"
-              onClick={() => window.open(site.url, "_blank")}
-              tabIndex={0}
-              style={{ outline: 'none' }}
-            >
-              <td className="px-2 py-1 border-b text-blue-600 hover:text-blue-400 w-1/3">
-                <a href={site.url} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-                  {site.name} ↗
-                </a>
-              </td>
-              <td className="px-2 py-1 border-b text-gray-500 w-2/3">{site.desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-
+function Details() {
   return <motion.div
     className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
 
@@ -162,21 +117,11 @@ function Details({ posts }) {
           </div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-8 w-full md:w-[66vw]">
-        <div className="text-sm w-full md:w-1/2 mb-4 md:mb-0">
-          <div className="mb-2">Notes</div>
-          <BlogWidget posts={posts} />
-        </div>
-        <div className="w-full md:w-1/2 text-sm">
-          <div className="mb-2">Websites I Love</div>
-          <WebsitesTable sites={websites} />
-        </div>
-      </div>
     </div>
   </motion.div >
 }
 
-export default function Home({ posts }) {
+export default function Home() {
   var [isOpen, setIsOpen] = useState(false)
 
   var onEnd = () => {
@@ -192,25 +137,10 @@ export default function Home({ posts }) {
           {
             !isOpen ?
               <Nametag onEnd={onEnd} key="nametag" /> :
-              <Details key="details" posts={posts} />
+              <Details key="details" />
           }
         </AnimatePresence>
       </main>
     </motion.div>
   )
-}
-
-export function getStaticProps() {
-  const posts = postFilePaths.map((filePath) => {
-    const source = fs.readFileSync(path.join(POSTS_PATH, filePath))
-    const { content, data } = matter(source)
-
-    return {
-      content,
-      data,
-      filePath,
-    }
-  })
-
-  return { props: { posts } }
 }

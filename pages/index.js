@@ -109,7 +109,7 @@ function Details() {
             Lewis Carson
           </div>
           <div>
-            Second year Computer Science student at Durham University. Interested in game theory, functional programming, and mathematical modelling. Incoming quant dev intern at <A href="https://queueco.com/">Queueco</A> 
+            Durham University graduate doing a quant research internship at <A href="https://www.marshallwace.com/">Marshall Wace</A> this summer, with plans to start the Applied Maths MSc at Imperial in autumn.
           </div>
           <div>
             Please <A href="mailto:lewis.carson@durham.ac.uk">Email</A> me regarding academic or professional enquires.
